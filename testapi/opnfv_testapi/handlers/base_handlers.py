@@ -75,10 +75,10 @@ class GenericApiHandler(web.RequestHandler):
 
     @web.asynchronous
     @gen.coroutine
-    @check.is_authorized
     @check.valid_token
     @check.no_body
     @check.miss_fields
+    @check.is_authorized
     @check.values_check
     @check.carriers_exist
     @check.new_not_exists

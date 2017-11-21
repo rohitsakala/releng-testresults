@@ -43,9 +43,9 @@ crudini \
 RUN pip install --upgrade pip
 
 RUN git config --global http.sslVerify false
-RUN git clone https://gerrit.opnfv.org/gerrit/releng /home/releng
+RUN git clone https://gerrit.opnfv.org/gerrit/releng-testresults /home/releng-testresults
 
-WORKDIR /home/releng/utils/test/testapi/
+WORKDIR /home/releng-testresults/testapi
 RUN pip install -r requirements.txt
 RUN python setup.py install
 CMD ["bash", "docker/start-server.sh"]

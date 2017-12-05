@@ -213,7 +213,6 @@ class MemDb(object):
 
     def _aggregate(self, *args, **kwargs):
         res = self.contents
-        print args
         for arg in args[0]:
             for k, v in arg.iteritems():
                 if k == '$match':

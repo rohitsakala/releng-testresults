@@ -139,7 +139,6 @@ def new_not_exists(xstep):
                 if query_data.get('name') is not None:
                     query_data['name'] = re.compile('\\b' + query_data.get('name') + '\\b', re.IGNORECASE)
             to_data = yield dbapi.db_find_one(self.table, query_data)
-            print to_data
             if to_data:
                 raises.Forbidden(message.exist(self.table, query()))
         ret = yield gen.coroutine(xstep)(self, *args, **kwargs)

@@ -178,6 +178,9 @@ class MemDb(object):
                             elif i_k == 'versions.projects.project':
                                 return self._in_scenarios_project(i_v,
                                                                   content)
+                elif isinstance(v, re._pattern_type):
+                    if v.match(content.get(k, None)) is None:
+                        return False
                 elif content.get(k, None) != v:
                     return False
 

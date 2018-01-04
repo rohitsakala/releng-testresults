@@ -42,15 +42,16 @@ class ModelBase(object):
         attr_parser = cls.attr_parser()
         t = cls()
         for k, v in a_dict.iteritems():
-            value = v
-            if isinstance(v, dict) and k in attr_parser:
-                value = attr_parser[k].from_dict(v)
-            elif isinstance(v, list) and k in attr_parser:
-                value = []
-                for item in v:
-                    value.append(attr_parser[k].from_dict(item))
+            if k in t.__dict__:
+                value = v
+                if isinstance(v, dict) and k in attr_parser:
+                    value = attr_parser[k].from_dict(v)
+                elif isinstance(v, list) and k in attr_parser:
+                    value = []
+                    for item in v:
+                        value.append(attr_parser[k].from_dict(item))
 
-            t.__setattr__(k, value)
+                t.__setattr__(k, value)
 
         return t
 

@@ -51,8 +51,10 @@ class TestcaseUpdateRequest(TestcaseCreateRequest):
 
 @swagger.model()
 class Testcase(TestcaseCreateRequest):
-    def __init__(self, _id=None, **kwargs):
-        self._id = None
+    def __init__(self, **kwargs):
+        self._id = kwargs.pop('_id', '')
+        self.project_name = kwargs.pop('project_name', '')
+        self.creation_date = kwargs.pop('creation_date', '')
         super(Testcase, self).__init__(**kwargs)
 
 

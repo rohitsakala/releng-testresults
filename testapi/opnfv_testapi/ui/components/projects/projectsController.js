@@ -56,7 +56,7 @@
          */
         function create(project) {
             ctrl.showError = false;
-            ctrl.showCreateSuccess = false;
+            ctrl.showSuccess = false;
             var projects_url = ctrl.url;
             var body = {
                 name: project.name,
@@ -64,7 +64,7 @@
             };
             ctrl.projectsRequest =
                 $http.post(projects_url, body).success(function (data){
-                    ctrl.showCreateSuccess = true ;
+                    ctrl.showSuccess = true ;
                     ctrl.success = "Project is successfully created."
                     ctrl.listProjects();
                 }).catch(function (data) {

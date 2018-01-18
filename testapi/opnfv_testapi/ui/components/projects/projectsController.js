@@ -21,7 +21,7 @@
 
         ProjectsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl',
-        'raiseAlert', 'confirmModal'
+        'raiseAlert', 'confirmModal', 'authenticate'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through projects declared in TestAPI.
      */
     function ProjectsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal) {
+        raiseAlert, confirmModal, authenticate) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/projects';
 

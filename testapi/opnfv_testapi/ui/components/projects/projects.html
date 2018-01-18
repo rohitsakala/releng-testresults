@@ -2,13 +2,13 @@
 
 <div class="row" style="margin-bottom:24px;"></div>
 <div class="row podsTable" style="vertical-align:middle">
-    <div class="col-sm-1 pull-right" ng-class="{ 'hidden': ! ((auth.projectNames.length>0) &&
-        auth.isAuthenticated) }" >
+    <div class="col-sm-1 pull-right" ng-class="{ 'hidden': !((auth.projectNames.length>0) &&
+        auth.isAuthenticated) && authenticate}" >
             <button type="button" class="btn btn-danger" ng-click="ctrl.openBatchDeleteModal()">
               <i class="fa fa-minus"></i> Delete</button>
     </div>
     <div class="col-sm-1 pull-right"  ng-class="{ 'hidden': ! ((auth.projectNames.length>0) &&
-        auth.isAuthenticated) }">
+        auth.isAuthenticated) && authenticate}">
         <button type="button" class="btn btn-success" ng-click="ctrl.openCreateModal()">
           <i class="fa fa-plus"></i> Create</button>
     </div>
@@ -40,7 +40,7 @@
             <th style="width: 1%;">Bulk Select</th>
             <th style="width: 19%;">Name</th>
             <th style="width: 70%;">Description</th>
-            <th style="width: 10%;" ng-class="{'hidden': ! ((auth.projectNames.length>0) && auth.isAuthenticated)}">Operations</th>
+            <th style="width: 10%;" ng-class="{'hidden': ! ((auth.projectNames.length>0) && auth.isAuthenticated) && authenticate}">Operations</th>
         </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
             </td>
             <td><a class="text-info" ng-click="ctrl.viewProject(project.name)">{{project.name}}</a></td>
             <td>{{project.description}}</td>
-            <td ng-class="{'hidden': ! ((auth.projectNames.length>0) && auth.isAuthenticated)}">
+            <td ng-class="{'hidden': ! ((auth.projectNames.length>0) && auth.isAuthenticated) && authenticate}">
                 <span class="podsTable-col">
                     <a class="text-warning" ng-click="ctrl.openUpdateModal(project.name)" title="Edit" >
                         <i class="fa fa-pencil-square-o"></i></a>

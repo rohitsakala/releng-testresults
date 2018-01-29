@@ -15,7 +15,7 @@ describe('testing the Projects Link for anonymous user', function () {
                     data: {
                         "projects": [
                             {
-                            "owner": "thuva4",
+                            "creator": "thuva4",
                             "_id": "5a0c022f9a07c846d3c2cc94",
                             "creation_date": "2017-11-15 14:30:31.200259",
                             "description": "dsfsd",
@@ -28,13 +28,13 @@ describe('testing the Projects Link for anonymous user', function () {
         ]);
     });
 
-	afterEach(function(){
-		mock.teardown();
-	});
-
-	it( 'should show the Projects Link for anonymous user', function() {
+    afterEach(function(){
         mock.teardown();
-		browser.get(baseURL);
+    });
+
+    it( 'should show the Projects Link for anonymous user', function() {
+        mock.teardown();
+        browser.get(baseURL);
         var projectslink = element(by.linkText('Projects'));
         expect(projectslink.isPresent()).toBe(true);
     });
@@ -70,10 +70,10 @@ describe('testing the Projects Link for anonymous user', function () {
     // });
 
     it('delete Operation is not  visible for anonymous user ', function () {
-		browser.get(baseURL+'#/projects');
-		var deleteOperation = element(by.css('a[title=Delete]'));
-		expect(deleteOperation.isDisplayed()).toBeFalsy();
-	});
+        browser.get(baseURL+'#/projects');
+        var deleteOperation = element(by.css('a[title=Delete]'));
+        expect(deleteOperation.isDisplayed()).toBeFalsy();
+    });
 
 });
 
@@ -122,7 +122,7 @@ describe('testing the Project Link for user who is not in submitter group', func
                         data: {
                             "projects": [
                                 {
-                                "owner": "thuva4",
+                                "creator": "thuva4",
                                 "_id": "5a0c022f9a07c846d3c2cc94",
                                 "creation_date": "2017-11-15 14:30:31.200259",
                                 "description": "dsfsd",
@@ -136,8 +136,8 @@ describe('testing the Project Link for user who is not in submitter group', func
         });
 
         afterEach(function(){
-		    mock.teardown();
-    	});
+            mock.teardown();
+        });
 
         it( 'should show the Project Link for user', function() {
             browser.get(baseURL);
@@ -280,8 +280,8 @@ describe('testing the Project Link for user who is in submitter group', function
     });
 
     afterEach(function(){
-		mock.teardown();
-	});
+        mock.teardown();
+    });
 
     it( 'should show the Project Link for user', function() {
         browser.get(baseURL);
@@ -363,7 +363,7 @@ describe('testing the Project Link for user who is in submitter group', function
     });
 
     it('Show error when user click the create button with an already existing name', function () {
-		browser.get(baseURL+"#/projects");
+        browser.get(baseURL+"#/projects");
         var buttonCreate = element(by.buttonText('Create'));
         buttonCreate.click();
         var name = element(by.model('ProjectModalCtrl.project.name'));
@@ -371,7 +371,7 @@ describe('testing the Project Link for user who is in submitter group', function
         browser.wait(EC.visibilityOf(name), 5000);
         var description = element(by.model('ProjectModalCtrl.project.description'));
         name.sendKeys('testProject3');
-		description.sendKeys('demoDescription');
+        description.sendKeys('demoDescription');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
@@ -545,9 +545,9 @@ describe('testing the Project Link for user who is in submitter group', function
         .isDisplayed()).toBe(true);
     });
 
-	it('If backend is not responding then show error when user click the create button',function(){
-		mock.teardown();
-		mock([
+    it('If backend is not responding then show error when user click the create button',function(){
+        mock.teardown();
+        mock([
             {
                 request: {
                     path: '/api/v1/profile',
@@ -563,8 +563,8 @@ describe('testing the Project Link for user who is in submitter group', function
                     }
                 }
             }
-		]);
-		browser.get(baseURL+"#/projects");
+        ]);
+        browser.get(baseURL+"#/projects");
         var buttonCreate = element(by.buttonText('Create'));
         buttonCreate.click();
         var name = element(by.model('ProjectModalCtrl.project.name'));
@@ -572,10 +572,10 @@ describe('testing the Project Link for user who is in submitter group', function
         browser.wait(EC.visibilityOf(name), 5000);
         var details = element(by.model('ProjectModalCtrl.project.description'));
         name.sendKeys('testproject');
-		details.sendKeys('demoDescription');
-		var buttonOK = element(by.buttonText('Ok'));
-		buttonOK.click().then(function(){
-			expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
+        details.sendKeys('demoDescription');
+        var buttonOK = element(by.buttonText('Ok'));
+        buttonOK.click().then(function(){
+            expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
         });
-	});
+    });
 })

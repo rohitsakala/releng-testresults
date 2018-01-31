@@ -128,7 +128,7 @@ module.exports = function (grunt) {
             },
             local: {
                 options: {
-                    configFile: '../tests/UI/protractor-conf.js'
+                    configFile: 'protractor-conf.js'
                 }
             }
         },

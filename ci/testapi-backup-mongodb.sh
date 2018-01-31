@@ -3,7 +3,7 @@
 set -e
 
 # Run MongoDB backup
-python $WORKSPACE/testapi/update/templates/backup_mongodb.py -o $WORKSPACE/
+python $WORKSPACE/ci/mongodb_backup.py -o $WORKSPACE/
 
 # Compressing the dump
 now=$(date +"%m_%d_%Y_%H_%M_%S")

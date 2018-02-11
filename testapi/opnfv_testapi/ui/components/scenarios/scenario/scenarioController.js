@@ -435,15 +435,34 @@
         ctrl.cancel = cancel;
         ctrl.data = angular.copy(data);
         ctrl.open = open;
+        ctrl.add = add;
+        ctrl.remove = remove;
 
+        ctrl.customs = [];
+
+        function add() {
+            var custom = ctrl.custom;
+            if(custom!="" && custom!=undefined ){
+                ctrl.customs.push(custom);
+                ctrl.custom = "";
+            }
+        };
+
+        function remove(index) {
+            // var name = ctrl.customs[index].Name;
+            ctrl.customs.splice(index, 1);
+
+        }
 
         /**
          * Initiate confirmation and call the success handler with the
          * inputs.
          */
         function confirm() {
-            ctrl.customs = []
-            ctrl.customs.push(ctrl.custom)
+            var custom = ctrl.custom;
+            if(custom!="" && custom!=undefined ){
+                ctrl.customs.push(custom);
+            }
             ctrl.data.successHandler(ctrl.customs,ctrl.data.project,ctrl.data.version,ctrl.data.installer);
             $uibModalInstance.dismiss('cancel');
 

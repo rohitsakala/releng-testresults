@@ -336,7 +336,7 @@ describe('testing the scenarios page for anonymous user', function () {
 });
 
 
-describe('testing the scenarios page for anonymous user', function () {
+describe('testing the scenarios page for user', function () {
     beforeEach(function(){
         mock([
             {
@@ -662,7 +662,7 @@ describe('testing the scenarios page for anonymous user', function () {
         browser.wait(EC.urlContains(baseURL+ '#/scenarios/test-scenario'), 10000);
     });
 
-    it( 'should not show the add installer option for user', function() {
+    it( 'should show the add installer option for user', function() {
         browser.get(baseURL+"#/scenarios/test-scenario");
         var EC = browser.ExpectedConditions;
         browser.wait(EC.urlContains(baseURL+ '#/scenarios/test-scenario'), 10000);
@@ -1003,6 +1003,42 @@ describe('testing the scenarios page for anonymous user', function () {
         var custom = element(by.model('customModalCtrl.custom'));
         browser.wait(EC.visibilityOf(custom), 5000);
         custom.sendKeys('testC');
+        var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
+        buttonOk.click()
+        expect(element(by.cssContainingText(".alert","Customs are successfully updated."))
+        .isDisplayed()).toBe(true);
+    });
+
+    it( 'Add multiple Customs by user', function() {
+        browser.get(baseURL+"#/scenarios/test-scenario");
+        var EC = browser.ExpectedConditions;
+        browser.wait(EC.urlContains(baseURL+ '#/scenarios/test-scenario'), 10000);
+        var installersShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[1]/a/p'))
+        installersShow.click();
+        var installerShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[1]/td[2]/a'))
+        installerShow.click();
+        var versionsShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[1]/a/p'))
+        versionsShow.click();
+        var versionShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[1]/td[2]/a'))
+        versionShow.click()
+        var projectsShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[1]/a'))
+        projectsShow.click();
+        var projectShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[3]/div/table/tbody/tr[1]/td[2]/a'))
+        projectShow.click();
+        var customsShow = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[3]/div/table/tbody[1]/tr[4]/td[2]/a/p'))
+        customsShow.click();
+        var row = element.all(by.repeater('(indexCU, custom) in project.customs')).first();
+        var cells = row.all(by.tagName('td'));
+        expect(cells.get(0).getText()).toContain("dvs");
+        var buttonAdd = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[3]/div/table/tbody[1]/tr[4]/td[2]/button'))
+        buttonAdd.click()
+        var custom = element(by.model('customModalCtrl.custom'));
+        browser.wait(EC.visibilityOf(custom), 5000);
+        custom.sendKeys('testC');
+        // browser.pause();
+        var buttonAddCustom = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[1]/div/fieldset/div/div/div/table/tfoot/tr/td[2]/input'))
+        buttonAddCustom.click();
+        custom.sendKeys('testB');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
         expect(element(by.cssContainingText(".alert","Customs are successfully updated."))

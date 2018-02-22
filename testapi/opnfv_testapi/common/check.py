@@ -47,6 +47,20 @@ def is_authorized(method):
     return wrapper
 
 
+def is_allowed(method):
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        if self.table == 'projects':
+            query_data = {}
+            query_data['project_name'] = kwargs.get('query')['name']
+            data = yield dbapi.db_find_one('testcases', query_data)
+            if data:
+                raises.Unauthorized(message.tied_with_resource())
+        ret = yield gen.coroutine(method)(self, *args, **kwargs)
+        raise gen.Return(ret)
+    return wrapper
+
+
 def valid_token(method):
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):

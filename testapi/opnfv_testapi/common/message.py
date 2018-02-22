@@ -64,3 +64,7 @@ def must_int(name):
 
 def no_permission():
     return 'You do not have permission to perform this action'
+
+
+def tied_with_resource():
+    return 'Selected resource is associated with other resources'

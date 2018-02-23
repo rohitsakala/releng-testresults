@@ -10,7 +10,7 @@
     </div>
     <div class="Delete" ng-class="{ 'hidden': confirmModal.data.text!='Delete' }">
             <div class="form-group">
-                <label for="confirmText"> You are about to delete.</label>
+                <label for="confirmText"> You are about to delete following {{confirmModal.data.resource}} : {{confirmModal.deleteObjects}} </label>
                 <br>
                 Do you want to proceed?
             </div>

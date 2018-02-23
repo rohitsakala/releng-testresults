@@ -11,7 +11,7 @@
      * Opens confirm modal dialog with input textbox
      */
     function confirmModal($uibModal) {
-        return function(text, successHandler, name) {
+        return function(text, resource, successHandler, name) {
             $uibModal.open({
                 templateUrl: '/testapi-ui/shared/alerts/confirmModal.html',
                 controller: 'CustomConfirmModalController as confirmModal',
@@ -20,8 +20,10 @@
                     data: function () {
                         return {
                             text: text,
+                            resource: resource,
                             successHandler: successHandler,
                             name: name
+
                         };
                     }
                 }
@@ -44,8 +46,26 @@
 
         ctrl.confirm = confirm;
         ctrl.cancel = cancel;
-
+        ctrl.buildDeleteObjects = buildDeleteObjects;
         ctrl.data = angular.copy(data);
+
+        function buildDeleteObjects(){
+            ctrl.deleteObjects = '';
+            if (typeof ctrl.data.name === 'string') {
+                ctrl.deleteObjects = ctrl.data.name
+            }
+            else{
+                for(var index in ctrl.data.name){
+                    if(index==0){
+                        ctrl.deleteObjects += ctrl.data.name[index]
+                    }
+                    else{
+                        ctrl.deleteObjects += ", "+ ctrl.data.name[index]
+                    }
+
+                }
+            }
+        }
         /**
          * Initiate confirmation and call the success handler with the
          * input text.
@@ -63,5 +83,7 @@
         function cancel() {
             $uibModalInstance.dismiss('cancel');
         }
+
+        ctrl.buildDeleteObjects();
     }
 })();

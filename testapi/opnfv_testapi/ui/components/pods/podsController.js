@@ -137,7 +137,6 @@
         function batchDelete(){
             var index;
             var checkedBox = [];
-            console.log(ctrl.checkBox)
             for(index in ctrl.checkBox){
                 if(!ctrl.showError){
                     if(ctrl.checkBox[index]){
@@ -153,7 +152,13 @@
          * message
          */
         function openBatchDeleteModal() {
-            confirmModal("Delete",ctrl.batchDelete);
+            var deleteObjects = []
+            for(var index in ctrl.checkBox){
+                if(ctrl.checkBox[index]){
+                    deleteObjects.push(ctrl.data.pods[index].name)
+                }
+            }
+            confirmModal("Delete", 'pods', ctrl.batchDelete, deleteObjects);
         }
 
         /**
@@ -162,7 +167,7 @@
          */
         function openDeleteModal(name) {
             console.log(name)
-            confirmModal("Delete", ctrl.podDelete, name);
+            confirmModal("Delete", 'pod', ctrl.podDelete, name);
         }
 
         /**

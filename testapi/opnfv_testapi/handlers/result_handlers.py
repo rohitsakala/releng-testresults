@@ -245,6 +245,8 @@ class ResultsUploadHandler(ResultsCLHandler):
             @raise 400: body/pod_name/project_name/case_name not provided
         """
         logging.info('file upload')
+        if not self.request.files:
+            raises.NotFound(message.key_error('file'))
         fileinfo = self.request.files['file'][0]
         is_public = self.get_body_argument('public')
         logging.warning('public:%s', is_public)

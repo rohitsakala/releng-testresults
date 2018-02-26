@@ -12,6 +12,7 @@ import urllib
 
 from opnfv_testapi.common import message
 from opnfv_testapi.models import project_models
+from opnfv_testapi.models import testcase_models as tcm
 from opnfv_testapi.tests.unit import executor
 from opnfv_testapi.tests.unit.handlers import test_base as base
 
@@ -23,6 +24,9 @@ class TestProjectBase(base.TestBase):
                                                          'qtip-ssh test')
         self.req_e = project_models.ProjectCreateRequest('functest',
                                                          'functest test')
+        self.testcase_d = tcm.TestcaseCreateRequest.from_dict(
+            self.load_json('testcase_d'))
+        self.project = 'qtip'
         self.get_res = project_models.Project
         self.list_res = project_models.Projects
         self.update_res = project_models.Project
@@ -150,6 +154,13 @@ class TestProjectUpdate(TestProjectBase):
         return self.req_d, self.req_d.name
 
     @executor.mock_valid_lfid()
+    @executor.update(httplib.UNAUTHORIZED, message.tied_with_resource())
+    def test_updateNotAllowed(self):
+        self.create_help('/api/v1/projects/%s/cases', self.testcase_d, self.req_d.name)
+        req = project_models.ProjectUpdateRequest('apex', 'apex test')
+        return req, self.req_d.name
+
+    @executor.mock_valid_lfid()
     @executor.update(httplib.OK, '_assert_update')
     def test_success(self):
         req = project_models.ProjectUpdateRequest('apex', 'apex test')
@@ -176,6 +187,12 @@ class TestProjectDelete(TestProjectBase):
     @executor.delete(httplib.NOT_FOUND, message.not_found_base)
     def test_notFound(self):
         return 'notFound'
+
+    @executor.mock_valid_lfid()
+    @executor.delete(httplib.UNAUTHORIZED, message.tied_with_resource())
+    def test_deleteNotAllowed(self):
+        self.create_help('/api/v1/projects/%s/cases', self.testcase_d, self.req_d.name)
+        return self.req_d.name
 
     @executor.mock_valid_lfid()
     @executor.delete(httplib.OK, '_assert_delete')

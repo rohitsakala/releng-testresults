@@ -10,7 +10,6 @@ import copy
 from datetime import datetime
 from datetime import timedelta
 import httplib
-import json
 import urllib
 
 from opnfv_testapi.common import message
@@ -45,22 +44,6 @@ class TestResultBase(base.TestBase):
     def _create_d(self):
         _, res = self.create_d()
         return res.href.split('/')[-1]
-
-    def upload(self, req):
-        if req and not isinstance(req, str) and hasattr(req, 'format'):
-            req = req.format()
-        res = self.fetch(self.basePath + '/upload',
-                         method='POST',
-                         body=json.dumps(req),
-                         headers=self.headers)
-
-        return self._get_return(res, self.create_res)
-
-
-class TestResultUpload(TestResultBase):
-    @executor.upload(httplib.BAD_REQUEST, message.key_error('file'))
-    def test_filenotfind(self):
-        return None
 
 
 class TestResultCreate(TestResultBase):
@@ -197,16 +180,6 @@ class TestResultGet(TestResultBase):
     def test_queryLast(self):
         return self._set_query(last=1)
 
-    @executor.query(httplib.OK, '_query_success', 4)
-    def test_queryPublic(self):
-        self._create_public_data()
-        return self._set_query()
-
-    @executor.query(httplib.OK, '_query_success', 1)
-    def test_queryPrivate(self):
-        self._create_private_data()
-        return self._set_query(public='false')
-
     @executor.query(httplib.OK, '_query_period_one', 1)
     def test_combination(self):
         return self._set_query('pod',
@@ -263,18 +236,6 @@ class TestResultGet(TestResultBase):
         req.start_date = datetime.now() + timedelta(**kwargs)
         req.stop_date = str(req.start_date + timedelta(minutes=10))
         req.start_date = str(req.start_date)
-        self.create(req)
-        return req
-
-    def _create_public_data(self, **kwargs):
-        req = copy.deepcopy(self.req_d)
-        req.public = 'true'
-        self.create(req)
-        return req
-
-    def _create_private_data(self, **kwargs):
-        req = copy.deepcopy(self.req_d)
-        req.public = 'false'
         self.create(req)
         return req
 

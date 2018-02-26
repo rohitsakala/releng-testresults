@@ -8,12 +8,9 @@
 ##############################################################################
 from datetime import datetime
 from datetime import timedelta
-import json
-import logging
 
 from bson import objectid
 
-from opnfv_testapi.common import constants
 from opnfv_testapi.common import message
 from opnfv_testapi.common import raises
 from opnfv_testapi.common.config import CONF
@@ -41,7 +38,6 @@ class GenericResultHandler(base_handlers.GenericApiHandler):
         query = dict()
         date_range = dict()
 
-        query['public'] = {'$not': {'$eq': 'false'}}
         for k in self.request.query_arguments.keys():
             v = self.get_query_argument(k)
             if k == 'project' or k == 'pod' or k == 'case':
@@ -60,13 +56,6 @@ class GenericResultHandler(base_handlers.GenericApiHandler):
                 date_range.update({'$lt': str(v)})
             elif 'build_id' in k:
                 query[k] = self.get_int(k, v)
-            elif k == 'signed':
-                username = self.get_secure_cookie(constants.TESTAPI_ID)
-                role = self.get_secure_cookie(constants.ROLE)
-                if role:
-                    del query['public']
-                    if role != "reviewer":
-                        query['user'] = username
             elif k not in ['last', 'page', 'descend']:
                 query[k] = v
             if date_range:
@@ -121,10 +110,9 @@ class ResultsCLHandler(GenericResultHandler):
                  - criteria : the global criteria status passed or failed
                  - trust_indicator : evaluate the stability of the test case
                    to avoid running systematically long and stable test case
-                 - signed : get logined user result
 
                 GET /results/project=functest&case=vPing&version=Arno-R1 \
-                &pod=pod_name&period=15&signed
+                &pod=pod_name&period=15
             @return 200: all test results consist with query,
                          empty list if no result is found
             @rtype: L{TestResults}
@@ -184,10 +172,6 @@ class ResultsCLHandler(GenericResultHandler):
             @type trust_indicator: L{float}
             @in trust_indicator: query
             @required trust_indicator: False
-            @param signed: user results or all results
-            @type signed: L{string}
-            @in signed: query
-            @required signed: False
             @param descend: true, newest2oldest; false, oldest2newest
             @type descend: L{string}
             @in descend: query
@@ -231,38 +215,8 @@ class ResultsCLHandler(GenericResultHandler):
                      values_check=values_check)
 
 
-class ResultsUploadHandler(ResultsCLHandler):
-    @swagger.operation(nickname="uploadTestResult")
-    def post(self):
-        """
-            @description: upload and create a test result
-            @param body: result to be created
-            @type body: L{ResultCreateRequest}
-            @in body: body
-            @rtype: L{CreateResponse}
-            @return 200: result is created.
-            @raise 404: pod/project/testcase not exist
-            @raise 400: body/pod_name/project_name/case_name not provided
-        """
-        logging.info('file upload')
-        if not self.request.files:
-            raises.NotFound(message.key_error('file'))
-        fileinfo = self.request.files['file'][0]
-        is_public = self.get_body_argument('public')
-        logging.warning('public:%s', is_public)
-        logging.info('results is :%s', fileinfo['filename'])
-        logging.info('results is :%s', fileinfo['body'])
-        self.json_args = json.loads(fileinfo['body']).copy()
-        self.json_args['public'] = is_public
-
-        openid = self.get_secure_cookie(constants.TESTAPI_ID)
-        if openid:
-            self.json_args['user'] = openid
-
-        super(ResultsUploadHandler, self).post()
-
-
 class ResultsGURHandler(GenericResultHandler):
+
     @swagger.operation(nickname='getTestResultById')
     def get(self, result_id):
         """

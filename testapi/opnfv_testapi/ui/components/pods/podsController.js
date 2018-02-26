@@ -35,6 +35,7 @@
         ctrl.url = testapiApiUrl + '/pods';
         ctrl.checkBox = []
         ctrl.checkBoxList = [];
+        ctrl.sorting = {};
 
         ctrl.create = create;
         ctrl.listPods = listPods;
@@ -47,6 +48,33 @@
         ctrl.batchDelete = batchDelete;
         ctrl.viewPod = viewPod
         ctrl.filterText = ''
+        ctrl.sortBy = sortBy
+
+        function sortBy(field){
+            if(ctrl.sorting[field]){
+                ctrl.data.pods.sort(function(a,b) {
+                    if (a[field].toLowerCase() > b[field].toLowerCase()) {
+                        return -1;
+                    }
+                    if (a[field].toLowerCase() < b[field].toLowerCase()) {
+                        return 1;
+                    }
+                    return 0;
+                });
+                ctrl.sorting[field] = false
+            }else{
+                ctrl.data.pods.sort(function(a,b) {
+                    if (a[field].toLowerCase() < b[field].toLowerCase()) {
+                        return -1;
+                    }
+                    if (a[field].toLowerCase() > b[field].toLowerCase()) {
+                        return 1;
+                    }
+                        return 0;
+                });
+                ctrl.sorting[field] = true
+            }
+        }
 
         /**
          * This is called when the date filter calendar is opened. It
@@ -105,6 +133,7 @@
             ctrl.podsRequest =
                 $http.get(reqURL).success(function (data) {
                     ctrl.data = data;
+                    ctrl.sortBy("name")
                 }).catch(function (data) {
                     ctrl.data = null;
                     ctrl.showError = true;

@@ -204,7 +204,15 @@
          * message
          */
         function openBatchDeleteModal() {
-            confirmModal("Delete",ctrl.batchDelete);
+            var deleteObjects = []
+            ctrl.checkBox.forEach(function(project, index){
+                if(!ctrl.showError){
+                    if(project){
+                        deleteObjects.push(ctrl.data.projects[index].name)
+                    }
+                }
+              });
+            confirmModal("Delete", 'projects', ctrl.batchDelete, deleteObjects);
         }
 
         /**
@@ -212,7 +220,7 @@
          * message
          */
         function openDeleteModal(name) {
-            confirmModal("Delete", ctrl.projectDelete, name);
+            confirmModal("Delete",'projects', ctrl.projectDelete, name);
         }
 
         ctrl.listProjects();

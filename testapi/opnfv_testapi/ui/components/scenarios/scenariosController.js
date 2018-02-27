@@ -65,7 +65,7 @@
         }
 
         function openDeleteModal(name){
-            confirmModal("Delete",ctrl.deleteScenario,name);
+            confirmModal("Delete", 'scenarios', ctrl.deleteScenario,name);
         }
 
         function deleteScenario(name){
@@ -82,15 +82,23 @@
         }
 
         function openBatchDeleteModal(){
-            confirmModal("Delete",ctrl.deleteBatchScenario);
+            var deleteObjects = []
+            ctrl.checkBox.forEach(function(scenario, index){
+                if(!ctrl.showError){
+                    if(scenario){
+                        deleteObjects.push(ctrl.data.scenarios[index].name);
+                    }
+                }
+              });
+            confirmModal("Delete", 'scenarios', ctrl.deleteBatchScenario, deleteObjects);
         }
 
         function deleteBatchScenario(){
             var index;
             var checkedBox = [];
-            ctrl.checkBox.forEach(function(project, index){
+            ctrl.checkBox.forEach(function(scenario, index){
                 if(!ctrl.showError){
-                    if(project){
+                    if(scenario){
                         deleteScenario(ctrl.data.scenarios[index].name);
                     }
                 }

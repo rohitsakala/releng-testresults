@@ -62,8 +62,6 @@ class ResultCreateRequest(base_models.ModelBase):
                  build_tag=None,
                  scenario=None,
                  criteria=None,
-                 user=None,
-                 public="true",
                  trust_indicator=None):
         self.pod_name = pod_name
         self.project_name = project_name
@@ -76,8 +74,6 @@ class ResultCreateRequest(base_models.ModelBase):
         self.build_tag = build_tag
         self.scenario = scenario
         self.criteria = criteria
-        self.user = user
-        self.public = public
         self.trust_indicator = trust_indicator if trust_indicator else TI(0)
 
     def __eq__(self, other):

@@ -43,20 +43,6 @@ def mock_valid_lfid():
     return _mock_valid_lfid
 
 
-def upload(excepted_status, excepted_response):
-    def _upload(create_request):
-        @functools.wraps(create_request)
-        def wrap(self):
-            request = create_request(self)
-            status, body = self.upload(request)
-            if excepted_status == httplib.OK:
-                getattr(self, excepted_response)(body)
-            else:
-                self.assertIn(excepted_response, body)
-        return wrap
-    return _upload
-
-
 def create(excepted_status, excepted_response):
     def _create(create_request):
         @functools.wraps(create_request)

@@ -49,7 +49,6 @@ mappings = [
     # Push results with mandatory request payload parameters
     # (project, case, and pod)
     (r"/api/v1/results", result_handlers.ResultsCLHandler),
-    (r'/api/v1/results/upload', result_handlers.ResultsUploadHandler),
     (r"/api/v1/results/([^/]+)", result_handlers.ResultsGURHandler),
     (r"/api/v1/deployresults", deploy_handlers.DeployResultsHandler),
     (r"/api/v1/deployresults/([^/]+)", deploy_handlers.DeployResultHandler),

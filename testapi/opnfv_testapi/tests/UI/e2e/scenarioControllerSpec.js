@@ -716,6 +716,8 @@ describe('testing the scenarios page for user', function () {
         installersShow.click();
         var installerDelete = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[1]/td[3]/button'))
         installerDelete.click()
+        expect(element(by.cssContainingText('label', "You are about to delete following installers : fuel"))
+        .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.cssContainingText(".alert","Installer is successfully deleted."))
@@ -787,6 +789,8 @@ describe('testing the scenarios page for user', function () {
         versionShow.click()
         var versionDelete = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody[1]/tr[1]/td[3]/button'))
         versionDelete.click()
+        expect(element(by.cssContainingText('label', "You are about to delete following version : colorado"))
+        .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.cssContainingText(".alert","Versions are successfully deleted."))
@@ -870,6 +874,8 @@ describe('testing the scenarios page for user', function () {
         projectsShow.click();
         var projectDelete = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[3]/div/table/tbody[1]/tr[1]/td[3]/button'))
         projectDelete.click()
+        expect(element(by.cssContainingText('label', "You are about to delete following projects : yardstick"))
+        .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.cssContainingText(".alert","Projects are successfully Deleted."))
@@ -1035,7 +1041,6 @@ describe('testing the scenarios page for user', function () {
         var custom = element(by.model('customModalCtrl.custom'));
         browser.wait(EC.visibilityOf(custom), 5000);
         custom.sendKeys('testC');
-        // browser.pause();
         var buttonAddCustom = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[1]/div/fieldset/div/div/div/table/tfoot/tr/td[2]/input'))
         buttonAddCustom.click();
         custom.sendKeys('testB');
@@ -1066,8 +1071,10 @@ describe('testing the scenarios page for user', function () {
         var row = element.all(by.repeater('(indexCU, custom) in project.customs')).first();
         var cells = row.all(by.tagName('td'));
         expect(cells.get(0).getText()).toContain("dvs");
-        var buttonAdd = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[3]/div/table/tbody[1]/tr[4]/td[2]/table/tbody/tr[1]/td[2]/button'))
-        buttonAdd.click()
+        var buttonDelete = element(by.xpath('//*[@id="ng-app"]/body/div/div[1]/div/table/tbody/tr[5]/td[2]/div[3]/div/table/tbody/tr[2]/td[2]/div[3]/div/table/tbody/tr[3]/td[2]/div[3]/div/table/tbody[1]/tr[4]/td[2]/table/tbody/tr[1]/td[2]/button'))
+        buttonDelete.click()
+        expect(element(by.cssContainingText('label', "You are about to delete following customs : dvs"))
+        .isDisplayed()).toBe(true);
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div[3]/button[1]'))
         buttonOk.click()
         expect(element(by.cssContainingText(".alert","Customs are successfully deleted."))

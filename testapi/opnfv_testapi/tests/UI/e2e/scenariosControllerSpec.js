@@ -690,6 +690,8 @@ describe('testing the scenarios page for user', function () {
         browser.get(baseURL+'#/scenarios');
         var deleteOperation = element(by.css('a[title=Delete]'));
         deleteOperation.click();
+        expect(element(by.cssContainingText('label', "You are about to delete following scenarios : test-scenario"))
+        .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.cssContainingText(".alert","Scenario is successfully deleted."))

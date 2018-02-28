@@ -22,7 +22,7 @@
         </div>
         <div class="col-sm-3 pull-right">
             <span style="margin-top:6px">Search:&nbsp;&nbsp;</span>
-            <input type="text" class="form-control search" ng-Model="ctrl.filterText" placeholder="Search String">
+            <input type="text" class="form-control search" ng-enter="ctrl.listPods()"  ng-Model="ctrl.filterText" placeholder="Search String">
         </div>
 </div>
 <div class="col-md-12">

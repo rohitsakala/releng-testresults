@@ -258,6 +258,8 @@ describe('testing the Pods page for authorized user', function () {
         checkBox.click();
         var buttonDelete = element(by.buttonText('Delete'));;
         buttonDelete.click();
+        expect(element(by.cssContainingText('label', "You are about to delete following pods : test"))
+        .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.cssContainingText(".alert","Delete Success"))

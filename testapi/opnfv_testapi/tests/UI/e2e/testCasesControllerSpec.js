@@ -575,6 +575,8 @@ describe('testing the test cases page for user who is in submitter group', funct
         testCases.click();
         var deleteOperation = element(by.css('a[title=Delete]'));
         deleteOperation.click();
+        expect(element(by.cssContainingText('label', "You are about to delete following testcases : testCase"))
+        .isDisplayed()).toBe(true);
         var buttonCancel = element(by.buttonText('Cancel'));
         buttonCancel.click();
         expect(buttonCancel.isPresent()).toBe(false);

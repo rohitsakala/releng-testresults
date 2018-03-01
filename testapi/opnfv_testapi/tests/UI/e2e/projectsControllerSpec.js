@@ -390,6 +390,8 @@ describe('testing the Project Link for user who is in submitter group', function
         browser.get(baseURL+"#/projects");
         var deleteOperation = element(by.css('a[title=Delete]'));
         deleteOperation.click();
+        expect(element(by.cssContainingText('label', "You are about to delete following projects : vsfv"))
+        .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
         expect(element(by.cssContainingText(".alert","Projects is successfully deleted"))

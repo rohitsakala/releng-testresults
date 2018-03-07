@@ -1,11 +1,11 @@
 import json
+import os
 
 from testapiclient import command
-from testapiclient import config
 from testapiclient import http_client
 from testapiclient import identity
 
-PODS_URL = config.Config.config.get("api", "url") + "/pods"
+PODS_URL = os.environ.get('testapi_url') + "/pods"
 
 
 class PodGet(command.Lister):

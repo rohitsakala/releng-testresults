@@ -1,18 +1,17 @@
 import functools
+import os
 import urllib
 
 import requests
-
-from testapiclient import config
 from testapiclient import user
 
 
 def _authenticate(username, password):
     session = requests.Session()
     hostname = '{}{}{}'.format(
-        config.Config.config.get("cas", "auth_url"),
-        urllib.quote(config.Config.config.get("api", "url")),
-        config.Config.config.get("cas", "signin_return"))
+        os.environ.get('testapi_cas_auth_url'),
+        urllib.quote(os.environ.get('testapi_url')),
+        os.environ.get('testapi_cas_signin_return'))
     data = {'name': username, 'pass': password, 'form_id': 'user_login'}
     response = session.post(hostname, data)
     user.User.session = session

@@ -70,5 +70,5 @@ def put(url, data):
     return http_request('put', url, data)
 
 
-def delete(url, data):
+def delete(url, data=None):
     return http_request('delete', url, data)

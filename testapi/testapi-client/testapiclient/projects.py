@@ -1,11 +1,11 @@
 import json
+import os
 
 from testapiclient import command
-from testapiclient import config
 from testapiclient import http_client
 from testapiclient import identity
 
-PROJECTS_URL = config.Config.config.get("api", "url") + "/projects"
+PROJECTS_URL = os.environ.get('testapi_url') + "/projects"
 
 
 class ProjectGet(command.Lister):

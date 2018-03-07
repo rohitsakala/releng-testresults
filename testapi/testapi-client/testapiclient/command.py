@@ -1,4 +1,5 @@
 from cliff import command
+from testapiclient import url_parse
 
 
 class Command(command.Command):
@@ -15,7 +16,13 @@ class Command(command.Command):
 
 
 class Lister(command.Command):
-    pass
+
+    @staticmethod
+    def filter_by_name(url, parsed_args):
+        def query_url():
+            return url_parse.query_join(url, name=parsed_args.name)
+
+        return query_url() if parsed_args.name else url
 
 
 class ShowOne(command.Command):

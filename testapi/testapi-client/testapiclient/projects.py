@@ -1,11 +1,17 @@
 import json
-import os
 
 from testapiclient import command
 from testapiclient import http_client
 from testapiclient import identity
+from testapiclient import url_parse
 
-PROJECTS_URL = os.environ.get('testapi_url') + "/projects"
+
+def projects_url():
+    url_parse.resource_join('projects')
+
+
+def project_url(parsed_args):
+    return url_parse.path_join(projects_url(), parsed_args.name)
 
 
 class ProjectGet(command.Lister):
@@ -18,10 +24,8 @@ class ProjectGet(command.Lister):
         return parser
 
     def take_action(self, parsed_args):
-        url = PROJECTS_URL
-        if parsed_args.name:
-            url = url + "?name=" + parsed_args.name
-        projects = http_client.get(url)
+        projects = http_client.get(self.filter_name(projects_url(),
+                                                    parsed_args))
         print projects
 
 
@@ -36,8 +40,7 @@ class ProjectGetOne(command.ShowOne):
         return parser
 
     def take_action(self, parsed_args):
-        url = PROJECTS_URL + "/" + parsed_args.name
-        project = http_client.get(url)
+        project = http_client.get(project_url(parsed_args))
         print project
 
 
@@ -54,8 +57,7 @@ class ProjectCreate(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        response = http_client.post(ProjectCreate.projects_url,
-                                    parsed_args.project)
+        response = http_client.post(projects_url(), parsed_args.project)
         if response.status_code == 200:
             print "Project has been successfully created!"
         else:
@@ -74,8 +76,7 @@ class ProjectDelete(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        projects = http_client.delete(
-            PROJECTS_URL + "/" + parsed_args.name)
+        projects = http_client.delete(project_url(parsed_args))
         print projects
 
 
@@ -96,7 +97,6 @@ class ProjectPut(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        projects = http_client.put(
-            PROJECTS_URL + "/" + parsed_args.name,
-            parsed_args.project)
+        projects = http_client.put(project_url(parsed_args),
+                                   parsed_args.project)
         print projects

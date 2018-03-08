@@ -28,6 +28,12 @@
 
     angular
         .module('testapiApp')
+        .service("keepState", function(){
+            this.filter = {};
+        });
+
+    angular
+        .module('testapiApp')
         .directive('dynamicModel', ['$compile', '$parse', function ($compile, $parse) {
             return {
                 restrict: 'A',

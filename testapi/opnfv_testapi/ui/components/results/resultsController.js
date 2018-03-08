@@ -38,7 +38,8 @@
          }]);
 
     ResultsController.$inject = [
-        '$scope', '$http', '$filter', '$state', 'testapiApiUrl','raiseAlert'
+        '$scope', '$http', '$filter', '$state', 'testapiApiUrl', 'raiseAlert',
+        'keepState'
     ];
 
     /**
@@ -47,7 +48,7 @@
      * a listing of community uploaded results.
      */
     function ResultsController($scope, $http, $filter, $state, testapiApiUrl,
-        raiseAlert) {
+        raiseAlert, keepState) {
         var ctrl = this;
 
         ctrl.open = open;
@@ -219,6 +220,15 @@
         function filterList(){
             if(ctrl.filter && ctrl.filterText!="" && ctrl.filterText!=undefined){
                 ctrl.tagArray[ctrl.filter] =  ctrl.filterText;
+                if(!keepState.filter.resultFilter){
+                    keepState.filter.resultFilter = {}
+                }
+                keepState.filter.resultFilter[ctrl.filter] = ctrl.filterText
+            }
+            else if(Object.keys(ctrl.tagArray).length==0){
+                if(keepState.filter.resultFilter){
+                    ctrl.tagArray = keepState.filter.resultFilter
+                }
             }
             ctrl.showError = false;
             var content_url = testapiApiUrl + '/results' +
@@ -260,6 +270,7 @@
                     });
             ctrl.filterText = ''
         }
+
         ctrl.filterList();
 
 
@@ -283,6 +294,7 @@
         function clearFilters() {
             ctrl.tagArray = {}
             ctrl.filter = undefined
+            keepState.filter.resultFilter = {}
             ctrl.filterList();
         }
     }

@@ -21,7 +21,7 @@
 
     PodsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal'
+        'confirmModal', 'keepState'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through pods declared in TestAPI.
      */
     function PodsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal) {
+        raiseAlert, confirmModal, keepState) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/pods';
         ctrl.checkBox = []
@@ -47,7 +47,6 @@
         ctrl.podDelete = podDelete
         ctrl.batchDelete = batchDelete;
         ctrl.viewPod = viewPod
-        ctrl.filterText = ''
         ctrl.sortBy = sortBy
 
         function sortBy(field){
@@ -96,7 +95,6 @@
         function create(pod) {
             ctrl.showError = false;
             ctrl.showSuccess = false;
-            console.log(pod);
             if(pod.name != ""){
                 var pods_url = ctrl.url;
                 var body = {
@@ -127,13 +125,22 @@
         function listPods() {
             ctrl.showError = false;
             var reqURL = ctrl.url;
-            if(ctrl.filterText!=''){
+            if(ctrl.filterText!=undefined){
                 reqURL = ctrl.url + "?name=" + ctrl.filterText
+            }
+            else if(keepState.filter.podFilter){
+                for (var filter in keepState.filter.podFilter){
+                    reqURL = ctrl.url + '?' + filter + '=' + keepState.filter.podFilter[filter]
+                    ctrl.filterText = keepState.filter.podFilter[filter]
+                }
             }
             ctrl.podsRequest =
                 $http.get(reqURL).success(function (data) {
                     ctrl.data = data;
                     ctrl.sortBy("name")
+                    keepState.filter.podFilter = {
+                        'name': ctrl.filterText
+                    }
                 }).catch(function (data) {
                     ctrl.data = null;
                     ctrl.showError = true;
@@ -195,7 +202,6 @@
          * message
          */
         function openDeleteModal(name) {
-            console.log(name)
             confirmModal("Delete", 'pod', ctrl.podDelete, name);
         }
 

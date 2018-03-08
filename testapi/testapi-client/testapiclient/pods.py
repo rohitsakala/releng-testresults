@@ -35,10 +35,9 @@ class PodGetOne(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super(PodGetOne, self).get_parser(prog_name)
-        parser.add_argument('-name',
+        parser.add_argument('name',
                             default='',
-                            help='Find pod using name',
-                            required=True)
+                            help='Find pod using name')
         return parser
 
     def take_action(self, parsed_args):
@@ -74,9 +73,8 @@ class PodDelete(command.Command):
 
     def get_parser(self, prog_name):
         parser = super(PodDelete, self).get_parser(prog_name)
-        parser.add_argument('-name',
+        parser.add_argument('name',
                             type=str,
-                            required=True,
                             help='Delete pods using name')
         return parser
 

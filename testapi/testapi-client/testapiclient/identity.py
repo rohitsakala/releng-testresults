@@ -17,19 +17,21 @@ def _authenticate(username, password):
         'form_id': 'user_login'
     }
     response = session.post(hostname, data)
-    user.User.session = session
+    if "login" not in response.text:
+        user.User.session = session
     return response
 
 
 def authenticate(xstep):
     @functools.wraps(xstep)
     def wrapper(self, parsed_args):
-        username = parsed_args.u
-        password = parsed_args.p
-        if(username and password):
-            response = _authenticate(username, password)
-            if "login" in response.text:
-                print "Authentication has failed."
-            else:
-                xstep(self, parsed_args)
+        if(user.User.session is None):
+            username = parsed_args.u
+            password = parsed_args.p
+            if(username and password):
+                response = _authenticate(username, password)
+                if "login" in response.text:
+                    print "Authentication has failed."
+                    return
+        xstep(self, parsed_args)
     return wrapper

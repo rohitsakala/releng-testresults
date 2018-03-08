@@ -44,7 +44,7 @@ class HTTPClient(object):
                                      headers=HTTPClient.headers).text
 
     def delete(self, url, *args):
-        if(args.__len__ > 0):
+        if(args.__len__() > 0):
             r = self._session_request('delete', url,
                                       data=json.dumps(args[0]),
                                       headers=HTTPClient.headers)

@@ -1040,10 +1040,7 @@ describe('testing the scenarios page for user', function () {
         buttonAdd.click()
         var custom = element(by.model('customModalCtrl.custom'));
         browser.wait(EC.visibilityOf(custom), 5000);
-        custom.sendKeys('testC');
-        var buttonAddCustom = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[1]/div/fieldset/div/div/div/table/tfoot/tr/td[2]/input'))
-        buttonAddCustom.click();
-        custom.sendKeys('testB');
+        custom.sendKeys('testC,testD,');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
         expect(element(by.cssContainingText(".alert","Customs are successfully updated."))

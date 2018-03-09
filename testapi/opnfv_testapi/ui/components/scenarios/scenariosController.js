@@ -127,7 +127,6 @@
         }
 
         function createScenario(scenario) {
-            console.log(scenario)
             ctrl.scenarioRequest =
                 $http.post(ctrl.url, scenario).success(function (data){
                     ctrl.showCreateSuccess = true;
@@ -270,7 +269,6 @@
         }
 
         function openVersionModal(){
-            console.log("Hello");
             $uibModal.open({
                 templateUrl: 'testapi-ui/components/scenarios/modals/versionModal.html',
                 controller: 'versionModalCtrl as versionModalCtrl',
@@ -383,8 +381,10 @@
             $uibModalInstance.dismiss('cancel');
         }
 
-        function handleModalCustom(custom){
-            ctrl.project.customs.push(custom);
+        function handleModalCustom(customs){
+            for (var custom in customs){
+                ctrl.project.customs.push(customs[custom]);
+            }
         }
 
         function openCustomModal(){
@@ -418,6 +418,7 @@
         ctrl.cancel = cancel;
         ctrl.data = angular.copy(data);
         ctrl.open = open;
+        ctrl.customs = []
 
 
         /**
@@ -425,7 +426,11 @@
          * inputs.
          */
         function confirm() {
-            ctrl.data.successHandler(ctrl.custom);
+            var custom = ctrl.custom;
+            if(custom!="" && custom!=undefined ){
+                ctrl.customs = custom.split(/[ ,]+/).filter(Boolean);
+            }
+            ctrl.data.successHandler(ctrl.customs);
             $uibModalInstance.dismiss('cancel');
 
         }

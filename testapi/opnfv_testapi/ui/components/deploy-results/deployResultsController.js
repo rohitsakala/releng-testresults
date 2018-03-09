@@ -20,7 +20,8 @@
         .controller('DeployResultsController', DeployResultsController);
 
     DeployResultsController.$inject = [
-        '$scope', '$http', '$filter', '$state', 'testapiApiUrl','raiseAlert'
+        '$scope', '$http', '$filter', '$state', 'testapiApiUrl','raiseAlert',
+        'keepState'
     ];
 
     /**
@@ -29,7 +30,7 @@
      * a listing of community uploaded results.
      */
     function DeployResultsController($scope, $http, $filter, $state, testapiApiUrl,
-        raiseAlert) {
+        raiseAlert, keepState) {
         var ctrl = this;
 
         ctrl.open = open;
@@ -122,6 +123,15 @@
         function filterList(){
             if(ctrl.filter && ctrl.filterText!="" && ctrl.filterText!=undefined){
                 ctrl.tagArray[ctrl.filter] =  ctrl.filterText;
+                if(!keepState.filter.deployResultFilter){
+                    keepState.filter.deployResultFilter = {}
+                }
+                keepState.filter.deployResultFilter[ctrl.filter] = ctrl.filterText
+            }
+            else if(Object.keys(ctrl.tagArray).length==0){
+                if(keepState.filter.deployResultFilter){
+                    ctrl.tagArray = keepState.filter.deployResultFilter
+                }
             }
             ctrl.showError = false;
             var content_url = testapiApiUrl + '/deployresults' +

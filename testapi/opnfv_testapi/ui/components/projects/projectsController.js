@@ -21,7 +21,7 @@
 
         ProjectsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl',
-        'raiseAlert', 'confirmModal', 'authenticate'
+        'raiseAlert', 'confirmModal', 'authenticate', 'keepState'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through projects declared in TestAPI.
      */
     function ProjectsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, authenticate) {
+        raiseAlert, confirmModal, authenticate, keepState) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/projects';
 
@@ -49,7 +49,6 @@
         ctrl.checkBoxList = [];
         ctrl.name = '';
         ctrl.details = '';
-        ctrl.filterText='';
 
         /**
          * This will contact the TestAPI to create a new project.
@@ -148,13 +147,22 @@
             ctrl.showError = false;
             var content_url = ctrl.url + '?';
             var filterText  = ctrl.filterText;
-            if(filterText != ''){
+            if(filterText != undefined){
                 content_url = content_url + 'name=' +
                 filterText;
+            }
+            else if(keepState.filter.projectFilter){
+                for (var filter in keepState.filter.projectFilter){
+                    content_url = content_url + filter + '=' + keepState.filter.projectFilter[filter]
+                    ctrl.filterText = keepState.filter.projectFilter[filter]
+                }
             }
             ctrl.resultsRequest =
                 $http.get(content_url).success(function (data) {
                     ctrl.data = data;
+                    keepState.filter.projectFilter = {
+                        'name': ctrl.filterText
+                    }
                 }).catch(function (data)  {
                     ctrl.data = null;
                     ctrl.showError = true;

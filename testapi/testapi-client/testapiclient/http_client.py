@@ -24,51 +24,44 @@ class HTTPClient(object):
             HTTPClient.__instance = self
 
     def get(self, url):
-        r = requests.get(url)
-        if r.status_code == 200:
-            return r.json()
-        else:
-            return r.text
-
-    def _session_request(self, method, *args, **kwargs):
-        return getattr(user.User.session, method)(*args, **kwargs)
+        return requests.get(url)
 
     def post(self, url, data):
-        return self._session_request('post', url,
-                                     data=json.dumps(data),
-                                     headers=HTTPClient.headers)
+        return self._request('post', url,
+                             data=json.dumps(data),
+                             headers=self.headers)
 
     def put(self, url, data):
-        return self._session_request('put', url,
-                                     data=json.dumps(data),
-                                     headers=HTTPClient.headers).text
+        return self._request('put', url,
+                             data=json.dumps(data),
+                             headers=self.headers)
 
     def delete(self, url, *args):
-        if(args.__len__() > 0):
-            r = self._session_request('delete', url,
-                                      data=json.dumps(args[0]),
-                                      headers=HTTPClient.headers)
-        else:
-            r = self._session_request('delete', url)
-        return r.text
+        data = json.dumps(args[0]) if len(args) > 0 else None
+        return self._request('delete', url,
+                             data=data,
+                             headers=self.headers)
+
+    def _request(self, method, *args, **kwargs):
+        return getattr(user.User.session, method)(*args, **kwargs)
 
 
-def http_request(method, *args, **kwargs):
+def _request(method, *args, **kwargs):
     client = HTTPClient.get_Instance()
     return getattr(client, method)(*args, **kwargs)
 
 
 def get(url):
-    return http_request('get', url)
+    return _request('get', url)
 
 
 def post(url, data):
-    return http_request('post', url, data)
+    return _request('post', url, data)
 
 
 def put(url, data):
-    return http_request('put', url, data)
+    return _request('put', url, data)
 
 
 def delete(url, data=None):
-    return http_request('delete', url, data)
+    return _request('delete', url, data)

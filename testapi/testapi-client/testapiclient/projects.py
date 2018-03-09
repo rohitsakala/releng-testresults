@@ -1,7 +1,7 @@
 import json
 
 from testapiclient import command
-from testapiclient import http_client
+from testapiclient import http_client as client
 from testapiclient import identity
 from testapiclient import url_parse
 
@@ -24,9 +24,7 @@ class ProjectGet(command.Lister):
         return parser
 
     def take_action(self, parsed_args):
-        projects = http_client.get(self.filter_name(projects_url(),
-                                                    parsed_args))
-        print projects
+        self.show(client.get(self.filter_name(projects_url(), parsed_args)))
 
 
 class ProjectGetOne(command.ShowOne):
@@ -40,8 +38,7 @@ class ProjectGetOne(command.ShowOne):
         return parser
 
     def take_action(self, parsed_args):
-        project = http_client.get(project_url(parsed_args))
-        print project
+        self.show(client.get(project_url(parsed_args)))
 
 
 class ProjectCreate(command.Command):
@@ -57,11 +54,8 @@ class ProjectCreate(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        response = http_client.post(projects_url(), parsed_args.project)
-        if response.status_code == 200:
-            print "Project has been successfully created!"
-        else:
-            print response.text
+        self.show('Create',
+                  client.post(projects_url(), parsed_args.project))
 
 
 class ProjectDelete(command.Command):
@@ -76,8 +70,8 @@ class ProjectDelete(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        projects = http_client.delete(project_url(parsed_args))
-        print projects
+        self.show('Delete',
+                  client.delete(project_url(parsed_args)))
 
 
 class ProjectPut(command.Command):
@@ -97,6 +91,5 @@ class ProjectPut(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        projects = http_client.put(project_url(parsed_args),
-                                   parsed_args.project)
-        print projects
+        self.show('Update',
+                  client.put(project_url(parsed_args), parsed_args.project))

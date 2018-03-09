@@ -14,6 +14,11 @@ class Command(command.Command):
 
         return parser
 
+    def show(self, request, response):
+        print ' '.join([request,
+                        'success' if response.status_code < 300
+                        else 'failed: {}'.format(response.text)])
+
 
 class Lister(command.Command):
 
@@ -24,6 +29,10 @@ class Lister(command.Command):
 
         return query_url() if parsed_args.name else url
 
+    def show(self, response):
+        print response.json() if response.status_code < 300 else response.text
+
 
 class ShowOne(command.Command):
-    pass
+    def show(self, response):
+        print response.json() if response.status_code < 300 else response.text

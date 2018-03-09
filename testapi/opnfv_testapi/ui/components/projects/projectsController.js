@@ -21,7 +21,7 @@
 
         ProjectsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl',
-        'raiseAlert', 'confirmModal', 'authenticate', 'keepState'
+        'raiseAlert', 'confirmModal', 'authenticate', 'keepState', 'sortService'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through projects declared in TestAPI.
      */
     function ProjectsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, authenticate, keepState) {
+        raiseAlert, confirmModal, authenticate, keepState, sortService) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/projects';
 
@@ -44,11 +44,13 @@
         ctrl.openBatchDeleteModal = openBatchDeleteModal;
         ctrl.projectDelete = projectDelete;
         ctrl.batchDelete = batchDelete;
+        ctrl.sortByName = sortByName
 
         ctrl.checkBox = [];
         ctrl.checkBoxList = [];
         ctrl.name = '';
         ctrl.details = '';
+        ctrl.ascending = false;
 
         /**
          * This will contact the TestAPI to create a new project.
@@ -70,6 +72,11 @@
                     ctrl.showError = true;
                     ctrl.error = data.statusText;
                 });
+        }
+
+        function sortByName(){
+            ctrl.data.projects = sortService.sortFunction(ctrl.data.projects, 'name', ctrl.ascending)
+            ctrl.ascending = !ctrl.ascending
         }
 
         /**

@@ -21,7 +21,7 @@
 
     PodsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal', 'keepState'
+        'confirmModal', 'keepState', 'sortService'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through pods declared in TestAPI.
      */
     function PodsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, keepState) {
+        raiseAlert, confirmModal, keepState, sortService) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/pods';
         ctrl.checkBox = []
@@ -50,29 +50,8 @@
         ctrl.sortBy = sortBy
 
         function sortBy(field){
-            if(ctrl.sorting[field]){
-                ctrl.data.pods.sort(function(a,b) {
-                    if (a[field].toLowerCase() > b[field].toLowerCase()) {
-                        return -1;
-                    }
-                    if (a[field].toLowerCase() < b[field].toLowerCase()) {
-                        return 1;
-                    }
-                    return 0;
-                });
-                ctrl.sorting[field] = false
-            }else{
-                ctrl.data.pods.sort(function(a,b) {
-                    if (a[field].toLowerCase() < b[field].toLowerCase()) {
-                        return -1;
-                    }
-                    if (a[field].toLowerCase() > b[field].toLowerCase()) {
-                        return 1;
-                    }
-                        return 0;
-                });
-                ctrl.sorting[field] = true
-            }
+            ctrl.data.pods = sortService.sortFunction(ctrl.data.pods, field , ctrl.sorting[field] )
+            ctrl.sorting[field]=!ctrl.sorting[field]
         }
 
         /**

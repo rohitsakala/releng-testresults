@@ -34,6 +34,36 @@
 
     angular
         .module('testapiApp')
+        .service('sortService', function(){
+
+            this.sortFunction = function(data, field, ascending){
+                if(ascending){
+                    data.sort(function(a,b) {
+                        if (a[field].toLowerCase() > b[field].toLowerCase()) {
+                            return -1;
+                        }
+                        if (a[field].toLowerCase() < b[field].toLowerCase()) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                }else{
+                    data.sort(function(a,b) {
+                        if (a[field].toLowerCase() < b[field].toLowerCase()) {
+                            return -1;
+                        }
+                        if (a[field].toLowerCase() > b[field].toLowerCase()) {
+                            return 1;
+                        }
+                            return 0;
+                    });
+                }
+                return data
+            }
+        });
+
+    angular
+        .module('testapiApp')
         .directive('dynamicModel', ['$compile', '$parse', function ($compile, $parse) {
             return {
                 restrict: 'A',

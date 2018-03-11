@@ -7,7 +7,7 @@ from testapiclient.utils import url_parse
 
 
 def projects_url():
-    url_parse.resource_join('projects')
+    return url_parse.resource_join('projects')
 
 
 def project_url(parsed_args):

@@ -34,5 +34,5 @@ def authenticate(xstep):
                 if "login" in response.text:
                     print "Authentication has failed."
                     return
-        xstep(self, parsed_args)
+        return xstep(self, parsed_args)
     return wrapper

@@ -7,7 +7,6 @@ from cliff import show
 import six
 
 from testapiclient import utils
-from testapiclient.utils import url_parse
 
 
 class CommandMeta(abc.ABCMeta):
@@ -38,13 +37,6 @@ class Command(command.Command):
 
 
 class Lister(Command, lister.Lister):
-    @staticmethod
-    def filter_by_name(url, parsed_args):
-        def query_url():
-            return url_parse.query_join(url, name=parsed_args.name)
-
-        return query_url() if parsed_args.name else url
-
     @staticmethod
     def format_output(columns, data):
         return (columns,

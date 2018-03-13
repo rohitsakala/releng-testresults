@@ -3,15 +3,15 @@ import json
 from testapiclient.utils import command
 from testapiclient.utils import http_client as client
 from testapiclient.utils import identity
-from testapiclient.utils import url_parse
+from testapiclient.utils import url_parse as up
 
 
 def pods_url():
-    return url_parse.resource_join('pods')
+    return up.resource_join('pods')
 
 
 def pod_url(parsed_args):
-    return url_parse.path_join(pods_url(), parsed_args.name)
+    return up.path_join(pods_url(), parsed_args.name)
 
 
 class PodGet(command.Lister):
@@ -34,10 +34,8 @@ class PodGet(command.Lister):
             "creation_date",
         )
 
-        data = client.get(
-            self.filter_by_name(pods_url(), parsed_args)).get('pods', [])
-
-        return self.format_output(columns, data)
+        data = client.get(up.query_by(pods_url(), 'name', parsed_args))
+        return self.format_output(columns, data.get('pods', []))
 
 
 class PodGetOne(command.ShowOne):

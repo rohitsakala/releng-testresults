@@ -3,15 +3,15 @@ import json
 from testapiclient.utils import command
 from testapiclient.utils import http_client as client
 from testapiclient.utils import identity
-from testapiclient.utils import url_parse
+from testapiclient.utils import url_parse as up
 
 
 def projects_url():
-    return url_parse.resource_join('projects')
+    return up.resource_join('projects')
 
 
 def project_url(parsed_args):
-    return url_parse.path_join(projects_url(), parsed_args.name)
+    return up.path_join(projects_url(), parsed_args.name)
 
 
 class ProjectGet(command.Lister):
@@ -30,10 +30,8 @@ class ProjectGet(command.Lister):
             'creator',
             'creation_date'
         )
-        data = client.get(
-            self.filter_by_name(projects_url(),
-                                parsed_args)).get('projects', [])
-        return self.format_output(columns, data)
+        data = client.get(up.query_by(projects_url(), 'name', parsed_args))
+        return self.format_output(columns, data.get('project', []))
 
 
 class ProjectGetOne(command.ShowOne):

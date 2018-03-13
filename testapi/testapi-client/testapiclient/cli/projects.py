@@ -3,15 +3,15 @@ import json
 from testapiclient.utils import command
 from testapiclient.utils import http_client as client
 from testapiclient.utils import identity
-from testapiclient.utils import url_parse
+from testapiclient.utils import url_parse as up
 
 
 def projects_url():
-    return url_parse.resource_join('projects')
+    return up.resource_join('projects')
 
 
 def project_url(parsed_args):
-    return url_parse.path_join(projects_url(), parsed_args.name)
+    return up.path_join(projects_url(), parsed_args.name)
 
 
 class ProjectGet(command.Lister):
@@ -24,7 +24,14 @@ class ProjectGet(command.Lister):
         return parser
 
     def take_action(self, parsed_args):
-        self.show(client.get(self.filter_name(projects_url(), parsed_args)))
+        columns = (
+            'name',
+            '_id',
+            'creator',
+            'creation_date'
+        )
+        data = client.get(up.query_by(projects_url(), 'name', parsed_args))
+        return self.format_output(columns, data.get('project', []))
 
 
 class ProjectGetOne(command.ShowOne):
@@ -38,10 +45,10 @@ class ProjectGetOne(command.ShowOne):
         return parser
 
     def take_action(self, parsed_args):
-        self.show(client.get(project_url(parsed_args)))
+        return self.format_output(client.get(project_url(parsed_args)))
 
 
-class ProjectCreate(command.Command):
+class ProjectCreate(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super(ProjectCreate, self).get_parser(prog_name)
@@ -54,8 +61,8 @@ class ProjectCreate(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        self.show('Create',
-                  client.post(projects_url(), parsed_args.project))
+        return self.format_output(
+            client.post(projects_url(), parsed_args.project))
 
 
 class ProjectDelete(command.Command):
@@ -70,11 +77,10 @@ class ProjectDelete(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        self.show('Delete',
-                  client.delete(project_url(parsed_args)))
+        return client.delete(project_url(parsed_args))
 
 
-class ProjectPut(command.Command):
+class ProjectPut(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super(ProjectPut, self).get_parser(prog_name)
@@ -91,5 +97,5 @@ class ProjectPut(command.Command):
 
     @identity.authenticate
     def take_action(self, parsed_args):
-        self.show('Update',
-                  client.put(project_url(parsed_args), parsed_args.project))
+        return self.format_output(
+            client.put(project_url(parsed_args), parsed_args.project))

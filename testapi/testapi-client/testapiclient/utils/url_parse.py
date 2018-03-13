@@ -20,3 +20,21 @@ def query_join(base, **queries):
 def resource_join(url):
     testapi_url = os.environ.get('testapi_url')
     return path_join(testapi_url, url)
+
+
+def get_queries(queries, parsed_args):
+    if not isinstance(queries, list):
+        queries = [queries]
+
+    return {query: getattr(parsed_args, query)
+            for query in queries
+            if hasattr(parsed_args, query)}
+
+
+def query_by(base, queries, parsed_args):
+    return query_join(base,
+                      **get_queries(queries, parsed_args))
+
+
+def url_format(base, parsed_args):
+    return base.format(**(parsed_args.__dict__))

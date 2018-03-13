@@ -19,7 +19,6 @@ class ProjectGet(command.Lister):
     def get_parser(self, prog_name):
         parser = super(ProjectGet, self).get_parser(prog_name)
         parser.add_argument('-name',
-                            default='',
                             help='Search projects by name')
         return parser
 
@@ -38,9 +37,7 @@ class ProjectGetOne(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super(ProjectGetOne, self).get_parser(prog_name)
-        parser.add_argument('-name',
-                            default='',
-                            required=True,
+        parser.add_argument('name',
                             help='Search project by name')
         return parser
 
@@ -69,9 +66,8 @@ class ProjectDelete(command.Command):
 
     def get_parser(self, prog_name):
         parser = super(ProjectDelete, self).get_parser(prog_name)
-        parser.add_argument('-name',
+        parser.add_argument('name',
                             type=str,
-                            required=True,
                             help='Delete project by name')
         return parser
 
@@ -84,9 +80,8 @@ class ProjectPut(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super(ProjectPut, self).get_parser(prog_name)
-        parser.add_argument('-name',
+        parser.add_argument('name',
                             type=str,
-                            required=True,
                             help='Update project by name')
         parser.add_argument('project',
                             type=json.loads,

@@ -1,32 +1,35 @@
 import httplib
 import json
+import os
+import urllib
 
 import requests
 
-from testapiclient.utils import user
 
-
-class HTTPClient(object):
-
-    __instance = None
+class ClientManager(object):
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
-    @staticmethod
-    def get_Instance():
-        """ Static access method. """
-        if HTTPClient.__instance is None:
-            HTTPClient()
-        return HTTPClient.__instance
+    def __init__(self, cli_options=None):
+        self.cli_options = cli_options
+        self.session = requests.Session()
 
-    def __init__(self):
-        """ Virtually private constructor. """
-        if HTTPClient.__instance is not None:
-            raise Exception("This class is a singleton!")
-        else:
-            HTTPClient.__instance = self
+    def auth(self):
+        hostname = '{}{}{}'.format(os.environ.get('testapi_cas_auth_url'),
+                                   urllib.quote(os.environ.get('testapi_url')),
+                                   os.environ.get('testapi_cas_signin_return'))
+        data = {
+            'name': self.cli_options.u,
+            'pass': self.cli_options.p,
+            'form_id': 'user_login'
+        }
+        response = self.session.post(hostname, data)
+        if "login" in response.text:
+            raise Exception('Authenticate failed')
 
     def get(self, url):
-        return self._parse_response('Get', requests.get(url))
+        return self._parse_response('Get',
+                                    self._request('get', url,
+                                                  headers=self.headers))
 
     def post(self, url, data):
         return self._parse_response('Create',
@@ -48,7 +51,7 @@ class HTTPClient(object):
                                                   headers=self.headers))
 
     def _request(self, method, *args, **kwargs):
-        return getattr(user.User.session, method)(*args, **kwargs)
+        return getattr(self.session, method)(*args, **kwargs)
 
     def _raise_failure(self, op, response):
         raise Exception('{} failed: {}'.format(op, response.reason))
@@ -58,23 +61,3 @@ class HTTPClient(object):
             return response.json() if op != 'Delete' else None
         else:
             self._raise_failure(op, response)
-
-
-def _request(method, *args, **kwargs):
-    return getattr(HTTPClient.get_Instance(), method)(*args, **kwargs)
-
-
-def get(url):
-    return _request('get', url)
-
-
-def post(url, data):
-    return _request('post', url, data)
-
-
-def put(url, data):
-    return _request('put', url, data)
-
-
-def delete(url, data=None):
-    return _request('delete', url, data)

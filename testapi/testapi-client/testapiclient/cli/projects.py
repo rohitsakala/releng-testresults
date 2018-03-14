@@ -30,7 +30,7 @@ class ProjectGet(command.Lister):
             'creation_date'
         )
         data = client.get(up.query_by(projects_url(), 'name', parsed_args))
-        return self.format_output(columns, data.get('project', []))
+        return self.format_output(columns, data.get('projects', []))
 
 
 class ProjectGetOne(command.ShowOne):

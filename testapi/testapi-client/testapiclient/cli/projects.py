@@ -1,17 +1,15 @@
 import json
 
 from testapiclient.utils import command
-from testapiclient.utils import http_client as client
-from testapiclient.utils import identity
-from testapiclient.utils import url_parse as up
+from testapiclient.utils import urlparse
 
 
 def projects_url():
-    return up.resource_join('projects')
+    return urlparse.resource_join('projects')
 
 
 def project_url(parsed_args):
-    return up.path_join(projects_url(), parsed_args.name)
+    return urlparse.path_join(projects_url(), parsed_args.name)
 
 
 class ProjectGet(command.Lister):
@@ -29,7 +27,8 @@ class ProjectGet(command.Lister):
             'creator',
             'creation_date'
         )
-        data = client.get(up.query_by(projects_url(), 'name', parsed_args))
+        data = self.app.client_manager.get(
+            urlparse.query_by(projects_url(), 'name', parsed_args))
         return self.format_output(columns, data.get('projects', []))
 
 
@@ -42,7 +41,8 @@ class ProjectGetOne(command.ShowOne):
         return parser
 
     def take_action(self, parsed_args):
-        return self.format_output(client.get(project_url(parsed_args)))
+        return self.format_output(
+            self.app.client_manager.get(project_url(parsed_args)))
 
 
 class ProjectCreate(command.ShowOne):
@@ -56,10 +56,9 @@ class ProjectCreate(command.ShowOne):
                                  '"description": (optional)""}')
         return parser
 
-    @identity.authenticate
     def take_action(self, parsed_args):
         return self.format_output(
-            client.post(projects_url(), parsed_args.project))
+            self.app.client_manager.post(projects_url(), parsed_args.project))
 
 
 class ProjectDelete(command.Command):
@@ -71,9 +70,8 @@ class ProjectDelete(command.Command):
                             help='Delete project by name')
         return parser
 
-    @identity.authenticate
     def take_action(self, parsed_args):
-        return client.delete(project_url(parsed_args))
+        return self.app.client_manager.delete(project_url(parsed_args))
 
 
 class ProjectPut(command.ShowOne):
@@ -90,7 +88,7 @@ class ProjectPut(command.ShowOne):
                                  '"description": (optional)""}')
         return parser
 
-    @identity.authenticate
     def take_action(self, parsed_args):
         return self.format_output(
-            client.put(project_url(parsed_args), parsed_args.project))
+            self.app.client_manager.put(
+                project_url(parsed_args), parsed_args.project))

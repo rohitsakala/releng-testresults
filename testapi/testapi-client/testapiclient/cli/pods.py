@@ -1,17 +1,15 @@
 import json
 
 from testapiclient.utils import command
-from testapiclient.utils import http_client as client
-from testapiclient.utils import identity
-from testapiclient.utils import url_parse as up
+from testapiclient.utils import urlparse
 
 
 def pods_url():
-    return up.resource_join('pods')
+    return urlparse.resource_join('pods')
 
 
 def pod_url(parsed_args):
-    return up.path_join(pods_url(), parsed_args.name)
+    return urlparse.path_join(pods_url(), parsed_args.name)
 
 
 class PodGet(command.Lister):
@@ -34,7 +32,8 @@ class PodGet(command.Lister):
             "creation_date",
         )
 
-        data = client.get(up.query_by(pods_url(), 'name', parsed_args))
+        data = self.app.client_manager.get(
+            urlparse.query_by(pods_url(), 'name', parsed_args))
         return self.format_output(columns, data.get('pods', []))
 
 
@@ -49,7 +48,8 @@ class PodGetOne(command.ShowOne):
         return parser
 
     def take_action(self, parsed_args):
-        return self.format_output(client.get(pod_url(parsed_args)))
+        return self.format_output(
+            self.app.client_manager.get(pod_url(parsed_args)))
 
 
 class PodCreate(command.ShowOne):
@@ -66,9 +66,9 @@ class PodCreate(command.ShowOne):
                                  'mode should be either "metal" or "virtual.')
         return parser
 
-    @identity.authenticate
     def take_action(self, parsed_args):
-        return self.format_output(client.post(pods_url(), parsed_args.pod))
+        return self.format_output(
+            self.app.client_manager.post(pods_url(), parsed_args.pod))
 
 
 class PodDelete(command.Command):
@@ -81,6 +81,5 @@ class PodDelete(command.Command):
                             help='Delete pods using name')
         return parser
 
-    @identity.authenticate
     def take_action(self, parsed_args):
-        return client.delete(pod_url(parsed_args))
+        return self.app.client_manager.delete(pod_url(parsed_args))

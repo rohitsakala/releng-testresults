@@ -1,7 +1,12 @@
-import testtools
-from mock import mock
+import httplib
 
-from testapiclient.utils.user import User
+from mock import mock
+import testtools
+
+from testapiclient.tests.unit import fakes
+from testapiclient.utils import clientmanager
+
+FAKE_FAILURE = fakes.FakeResponse(status_code=httplib.FORBIDDEN, data='Error')
 
 
 class ParserException(Exception):
@@ -24,6 +29,14 @@ class TestCommand(testtools.TestCase):
         }
         self.config_mock = mock.patch.dict(
             'os.environ', env_variables).start()
+        self.fake_stdout = fakes.FakeStdout()
+        self.fake_log = fakes.FakeLog()
+        self.app = fakes.FakeApp(self.fake_stdout, self.fake_log)
+        self.app.client_manager = clientmanager.ClientManager()
+        self.get_mock = mock.patch('requests.Session.get').start()
+        self.post_mock = mock.patch('requests.Session.post').start()
+        self.delete_mock = mock.patch('requests.Session.delete').start()
+        self.put_mock = mock.patch('requests.Session.put').start()
 
     def check_parser(self, cmd, args, verify_args):
         cmd_parser = cmd.get_parser('check_parser')
@@ -37,6 +50,3 @@ class TestCommand(testtools.TestCase):
                 self.assertIn(attr, parsed_args)
                 self.assertEqual(value, getattr(parsed_args, attr))
         return parsed_args
-
-    def mock_unautherized(self):
-        User.session = None

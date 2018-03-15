@@ -63,12 +63,6 @@ describe('testing the Projects Link for anonymous user', function () {
         expect(cells.get(1).getText()).toContain("testproject");
     });
 
-    // it('redirect to project page when user clicks a project',function(){
-    //     var projectlink = element(by.linkText('testproject')).click();
-    //     var EC = browser.ExpectedConditions;
-    //     browser.wait(EC.urlContains(baseURL+ '/#/projects/testproject'), 10000);
-    // });
-
     it('delete Operation is not  visible for anonymous user ', function () {
         browser.get(baseURL+'#/projects');
         var deleteOperation = element(by.css('a[title=Delete]'));
@@ -158,10 +152,10 @@ describe('testing the Project Link for user who is not in submitter group', func
             expect(buttonCreate.isDisplayed()).toBeFalsy();
         });
 
-        it('Delete button is not visible for  user ', function () {
+        it('Delete button is not visible for user ', function () {
             browser.get(baseURL+'#/projects');
-            var buttonCreate = element(by.buttonText('Create'));
-            expect(buttonCreate.isDisplayed()).toBeFalsy();
+            var buttonDelete = element(by.buttonText('Delete'));
+            expect(buttonDelete.isDisplayed()).toBeFalsy();
         });
 
         it('delete Operation is not visible for user ', function () {
@@ -302,13 +296,13 @@ describe('testing the Project Link for user who is in submitter group', function
         expect(buttonCreate.isDisplayed()).toBe(true);
     });
 
-    it('Delete button is not visible for anonymous user ', function () {
+    it('Delete button is visible for user ', function () {
         browser.get(baseURL+'#/projects');
-        var buttonCreate = element(by.buttonText('Create'));
-        expect(buttonCreate.isDisplayed()).toBe(true);
+        var buttonDelete = element(by.buttonText('Delete'));
+        expect(buttonDelete.isDisplayed()).toBe(true);
     });
 
-    it('delete Operation is not visible for  user ', function () {
+    it('delete Operation is visible for  user ', function () {
         browser.get(baseURL+'#/projects');
         var deleteOperation = element(by.css('a[title=Delete]'));
         expect(deleteOperation.isDisplayed()).toBe(true);

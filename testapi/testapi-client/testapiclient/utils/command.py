@@ -20,17 +20,6 @@ class CommandMeta(abc.ABCMeta):
 
 @six.add_metaclass(CommandMeta)
 class Command(command.Command):
-
-    def get_parser(self, prog_name):
-        parser = super(Command, self).get_parser(prog_name)
-        parser.add_argument('-u',
-                            type=str,
-                            help='Username for authentication')
-        parser.add_argument('-p',
-                            type=str,
-                            help='Password for authentication')
-        return parser
-
     def run(self, parsed_args):
         self.log.debug('run(%s)', parsed_args)
         return super(Command, self).run(parsed_args)

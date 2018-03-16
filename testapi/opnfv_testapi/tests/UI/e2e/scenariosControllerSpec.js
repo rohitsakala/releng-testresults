@@ -32,154 +32,6 @@ describe('testing the scenarios page for anonymous user', function () {
                                                  {
                                                     "date": "2016-12-11 01:45",
                                                     "score": "14/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-15 05:28",
-                                                    "score": "17/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-17 03:41",
-                                                    "score": "16/24"
-                                                 },
-                                                 {
-                                                    "date": "2018-01-22T18:30:00.000Z",
-                                                    "score": "10/13"
-                                                 }
-                                              ],
-                                              "trust_indicators": [
-                                                 {
-                                                    "date": "2016-12-09 11:38",
-                                                    "status": "silver"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-25 08:22",
-                                                    "status": "gold"
-                                                 },
-                                                 {
-                                                    "date": "2018-01-22T18:30:00.000Z",
-                                                    "status": "sf"
-                                                 },
-                                                 {
-                                                    "date": "2018-01-17T18:30:00.000Z",
-                                                    "status": "df"
-                                                 }
-                                              ]
-                                           },
-                                           {
-                                              "project": "functest",
-                                              "customs": [
-                                                 "vping_ssh",
-                                                 "vping_userdata",
-                                              ],
-                                              "scores": [
-                                                 {
-                                                    "date": "2016-12-09 11:28",
-                                                    "score": "6/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-14 15:34",
-                                                    "score": "8/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-19 13:22",
-                                                    "score": "8/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-22 18:17",
-                                                    "score": "8/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-25 08:22",
-                                                    "score": "8/8"
-                                                 }
-                                              ],
-                                              "trust_indicators": [
-                                                 {
-                                                    "date": "2016-12-09 11:38",
-                                                    "status": "silver"
-                                                 }
-                                              ]
-                                           },
-                                           {
-                                              "project": "sla",
-                                              "customs": [],
-                                              "scores": [
-                                                 {
-                                                    "date": "2018-01-16T18:30:00.000Z",
-                                                    "score": "sdS"
-                                                 }
-                                              ],
-                                              "trust_indicators": []
-                                           },
-                                           {
-                                              "project": "dvsd",
-                                              "customs": [],
-                                              "scores": [],
-                                              "trust_indicators": []
-                                           }
-                                        ]
-                                     },
-                                     {
-                                        "owner": "dfgvds",
-                                        "version": "df",
-                                        "projects": []
-                                     }
-                                  ]
-                               },
-                               {
-                                  "installer": "fuel2",
-                                  "versions": [
-                                     {
-                                        "owner": "testUser",
-                                        "version": "colorado",
-                                        "projects": [
-                                           {
-                                              "project": "yardstick",
-                                              "customs": [
-                                                 "tc002",
-                                                 "tc005",
-                                                 "tc010",
-                                                 "tc011"
-                                              ],
-                                              "scores": [
-                                                 {
-                                                    "date": "2016-12-11 01:45",
-                                                    "score": "14/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-15 05:28",
-                                                    "score": "17/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-17 03:41",
-                                                    "score": "16/24"
-                                                 }
-                                              ],
-                                              "trust_indicators": [
-                                                 {
-                                                    "date": "2016-12-09 11:38",
-                                                    "status": "silver"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-25 08:22",
-                                                    "status": "gold"
-                                                 }
-                                              ]
-                                           },
-                                           {
-                                              "project": "functest",
-                                              "customs": [
-                                                 "vping_ssh",
-                                                 "vping_userdata"
-                                              ],
-                                              "scores": [
-                                                 {
-                                                    "date": "2016-12-09 11:28",
-                                                    "score": "6/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-14 15:34",
-                                                    "score": "8/8"
                                                  }
                                               ],
                                               "trust_indicators": [
@@ -197,7 +49,43 @@ describe('testing the scenarios page for anonymous user', function () {
                             "_id": "5a50fcacsdgdsgdasgfvb861c",
                             "name": "test-scenario",
                             "creation_date": "2018-01-06 22:13:24.160407"
-                            }
+                            },
+                            {
+                                "installers": [
+                                   {
+                                      "installer": "fuel",
+                                      "versions": [
+                                         {
+                                            "owner": "testUser",
+                                            "version": "colorado",
+                                            "projects": [
+                                               {
+                                                  "project": "yardstick",
+                                                  "customs": [
+                                                     "dvs"
+                                                  ],
+                                                  "scores": [
+                                                     {
+                                                        "date": "2016-12-11 01:45",
+                                                        "score": "14/24"
+                                                     }
+                                                  ],
+                                                  "trust_indicators": [
+                                                     {
+                                                        "date": "2016-12-09 11:38",
+                                                        "status": "silver"
+                                                     }
+                                                  ]
+                                               }
+                                            ]
+                                         }
+                                      ]
+                                   }
+                                ],
+                                "_id": "5a50fcacsdgdsgdasgfvb861d",
+                                "name": "z-test-scenario",
+                                "creation_date": "2018-01-06 22:13:24.160407"
+                                }
                         ]
                     }
                 }
@@ -227,6 +115,15 @@ describe('testing the scenarios page for anonymous user', function () {
         var row = element.all(by.repeater('(index, scenario) in ctrl.data.scenarios')).first();
         var cells = row.all(by.tagName('td'));
         expect(cells.get(1).getText()).toContain("test-scenario");
+    });
+
+    it('Sort scenarios', function () {
+        browser.get(baseURL+"#/scenarios");
+        var sort = element(by.xpath('//*[@id="ng-app"]/body/div/div[4]/div/table/thead/tr/th[2]/a[2]/span'))
+        sort.click();
+        var row = element.all(by.repeater('(index, scenario) in ctrl.data.scenarios')).first();
+        var cells = row.all(by.tagName('td'));
+        expect(cells.get(1).getText()).toContain("z-test-scenario");
     });
 
     it('create button is not visible for anonymous user ', function () {
@@ -271,154 +168,6 @@ describe('testing the scenarios page for user', function () {
                                                  {
                                                     "date": "2016-12-11 01:45",
                                                     "score": "14/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-15 05:28",
-                                                    "score": "17/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-17 03:41",
-                                                    "score": "16/24"
-                                                 },
-                                                 {
-                                                    "date": "2018-01-22T18:30:00.000Z",
-                                                    "score": "10/13"
-                                                 }
-                                              ],
-                                              "trust_indicators": [
-                                                 {
-                                                    "date": "2016-12-09 11:38",
-                                                    "status": "silver"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-25 08:22",
-                                                    "status": "gold"
-                                                 },
-                                                 {
-                                                    "date": "2018-01-22T18:30:00.000Z",
-                                                    "status": "sf"
-                                                 },
-                                                 {
-                                                    "date": "2018-01-17T18:30:00.000Z",
-                                                    "status": "df"
-                                                 }
-                                              ]
-                                           },
-                                           {
-                                              "project": "functest",
-                                              "customs": [
-                                                 "vping_ssh",
-                                                 "vping_userdata",
-                                              ],
-                                              "scores": [
-                                                 {
-                                                    "date": "2016-12-09 11:28",
-                                                    "score": "6/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-14 15:34",
-                                                    "score": "8/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-19 13:22",
-                                                    "score": "8/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-22 18:17",
-                                                    "score": "8/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-25 08:22",
-                                                    "score": "8/8"
-                                                 }
-                                              ],
-                                              "trust_indicators": [
-                                                 {
-                                                    "date": "2016-12-09 11:38",
-                                                    "status": "silver"
-                                                 }
-                                              ]
-                                           },
-                                           {
-                                              "project": "sla",
-                                              "customs": [],
-                                              "scores": [
-                                                 {
-                                                    "date": "2018-01-16T18:30:00.000Z",
-                                                    "score": "sdS"
-                                                 }
-                                              ],
-                                              "trust_indicators": []
-                                           },
-                                           {
-                                              "project": "dvsd",
-                                              "customs": [],
-                                              "scores": [],
-                                              "trust_indicators": []
-                                           }
-                                        ]
-                                     },
-                                     {
-                                        "owner": "dfgvds",
-                                        "version": "df",
-                                        "projects": []
-                                     }
-                                  ]
-                               },
-                               {
-                                  "installer": "fuel2",
-                                  "versions": [
-                                     {
-                                        "owner": "testUser",
-                                        "version": "colorado",
-                                        "projects": [
-                                           {
-                                              "project": "yardstick",
-                                              "customs": [
-                                                 "tc002",
-                                                 "tc005",
-                                                 "tc010",
-                                                 "tc011"
-                                              ],
-                                              "scores": [
-                                                 {
-                                                    "date": "2016-12-11 01:45",
-                                                    "score": "14/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-15 05:28",
-                                                    "score": "17/24"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-17 03:41",
-                                                    "score": "16/24"
-                                                 }
-                                              ],
-                                              "trust_indicators": [
-                                                 {
-                                                    "date": "2016-12-09 11:38",
-                                                    "status": "silver"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-25 08:22",
-                                                    "status": "gold"
-                                                 }
-                                              ]
-                                           },
-                                           {
-                                              "project": "functest",
-                                              "customs": [
-                                                 "vping_ssh",
-                                                 "vping_userdata"
-                                              ],
-                                              "scores": [
-                                                 {
-                                                    "date": "2016-12-09 11:28",
-                                                    "score": "6/8"
-                                                 },
-                                                 {
-                                                    "date": "2016-12-14 15:34",
-                                                    "score": "8/8"
                                                  }
                                               ],
                                               "trust_indicators": [
@@ -514,13 +263,13 @@ describe('testing the scenarios page for user', function () {
         expect(cells.get(1).getText()).toContain("test-scenario");
     });
 
-    it('create button is not visible for user ', function () {
+    it('create button is visible for user ', function () {
         browser.get(baseURL+'#/scenarios');
         var buttonCreate = element(by.buttonText('Create'));
         expect(buttonCreate.isDisplayed()).toBe(true);
     });
 
-    it('delete button is not visible for user ', function () {
+    it('delete button is visible for user ', function () {
         browser.get(baseURL+'#/scenarios');
         var buttonDelete = element(by.buttonText('Delete'));
         expect(buttonDelete.isDisplayed()).toBe(true);

@@ -21,7 +21,7 @@
 
         ScenariosController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl',
-        'raiseAlert', 'confirmModal'
+        'raiseAlert', 'confirmModal', 'sortService'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through projects declared in TestAPI.
      */
     function ScenariosController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal) {
+        raiseAlert, confirmModal, sortService) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/scenarios';
 
@@ -44,8 +44,9 @@
         ctrl.deleteScenario = deleteScenario;
         ctrl.openBatchDeleteModal = openBatchDeleteModal;
         ctrl.deleteBatchScenario = deleteBatchScenario
-
+        ctrl.sortBy = sortBy
         ctrl.checkBox = [];
+        ctrl.sortName = false
 
         function openUpdateModal(name){
             $uibModal.open({
@@ -66,6 +67,11 @@
 
         function openDeleteModal(name){
             confirmModal("Delete", 'scenarios', ctrl.deleteScenario,name);
+        }
+
+        function sortBy(){
+            ctrl.data.scenarios = sortService.sortFunction(ctrl.data.scenarios, 'name' , ctrl.sortName)
+            ctrl.sortName=!ctrl.sortName
         }
 
         function deleteScenario(name){
@@ -142,6 +148,7 @@
            ctrl.resultsRequest =
                $http.get(ctrl.url).success(function (data) {
                    ctrl.data = data;
+                   ctrl.sortBy()
                }).catch(function (data)  {
                    ctrl.data = null;
                    ctrl.showError = true;

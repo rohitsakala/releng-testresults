@@ -32,7 +32,6 @@ class TestCaseBase(base.TestBase):
         self.update_res = tcm.Testcase
         self.basePath = '/api/v1/projects/%s/cases'
         fake_pymongo.projects.insert(self.project_e.format())
-        print self.req_d.format()
         self.results_d = rm.ResultCreateRequest.from_dict(
             self.load_json('test_result'))
 
@@ -72,14 +71,19 @@ class TestCaseBase(base.TestBase):
         return super(TestCaseBase, self).update(new, self.project, case)
 
     @executor.mock_valid_lfid()
-    def delete(self, case):
-        return super(TestCaseBase, self).delete(self.project, case)
+    def delete(self, case=None, project=None):
+        return super(TestCaseBase, self).delete(project, case)
 
 
 class TestCaseCreate(TestCaseBase):
     @executor.create(httplib.BAD_REQUEST, message.no_body())
     def test_noBody(self):
         return None
+
+    @executor.create(httplib.FORBIDDEN, message.no_permission())
+    def test_unauthorized(self):
+        self.project = 'newProject'
+        return self.req_d
 
     @executor.create(httplib.FORBIDDEN, message.not_found_base)
     def test_noProject(self):
@@ -154,6 +158,12 @@ class TestCaseUpdate(TestCaseBase):
         self.create_e()
         return self.update_req, self.req_d.name
 
+    @executor.update(httplib.FORBIDDEN, message.no_permission())
+    def test_unauthorized(self):
+        update_req_e = tcm.TestcaseUpdateRequest(project_name="newProject",
+                                                 **self.req_e.format())
+        return update_req_e, self.req_d.name
+
     @executor.update(httplib.FORBIDDEN, message.no_update())
     def test_noUpdate(self):
         update = tcm.TestcaseUpdateRequest(project_name=self.project,
@@ -184,19 +194,26 @@ class TestCaseDelete(TestCaseBase):
         fake_pymongo.testcases.insert({
             'name': self.results_d.case_name,
             'project_name': self.results_d.project_name})
+        fake_pymongo.testcases.insert({
+            'name': 'newCase',
+            'project_name': 'newProject'})
 
     @executor.delete(httplib.NOT_FOUND, message.not_found_base)
     def test_notFound(self):
-        return 'notFound'
+        return 'notFound', self.project
+
+    @executor.delete(httplib.FORBIDDEN, message.no_permission())
+    def test_unauthorized(self):
+        return 'newCase', 'newProject'
 
     @executor.delete(httplib.UNAUTHORIZED, message.tied_with_resource())
     def test_deleteNotAllowed(self):
-        print self.create_help('/api/v1/results', self.results_d)
-        return self.results_d.case_name
+        self.create_help('/api/v1/results', self.results_d)
+        return self.results_d.case_name, self.project
 
     @executor.delete(httplib.OK, '_delete_success')
     def test_success(self):
-        return self.req_d.name
+        return self.req_d.name, self.project
 
     def _delete_success(self, body):
         self.assertEqual(body, '')

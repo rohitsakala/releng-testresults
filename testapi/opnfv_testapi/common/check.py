@@ -31,16 +31,22 @@ def is_authorized(method):
                 raises.Unauthorized(message.not_lfid())
             if method.__name__ == "_create":
                 kwargs['creator'] = testapi_id
-            if self.table in ['projects']:
+            if self.table in ['projects', 'testcases']:
+                map_name = {
+                    'projects': 'name',
+                    'testcases': 'project_name'
+                }
+                group = "opnfv-gerrit-{}-submitters"
                 query = kwargs.get('query')
                 if type(query) is not dict:
                     query_data = query()
                 else:
-                    if self.json_args is None or 'name' not in self.json_args:
+                    if (self.json_args is None or
+                            map_name[self.table] not in self.json_args):
                         query_data = query
                     else:
                         query_data = self.json_args
-                group = "opnfv-gerrit-" + query_data['name'] + "-submitters"
+                group = group.format(query_data[map_name[self.table]])
                 if group not in user_info['groups']:
                     raises.Unauthorized(message.no_permission())
         ret = yield gen.coroutine(method)(self, *args, **kwargs)

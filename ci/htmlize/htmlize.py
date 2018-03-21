@@ -15,9 +15,9 @@ def main(args):
 
     # Merging two specs
     api_response = requests.get(args.api_declaration_url)
-    api_response = json.loads(api_response.content)
+    api_response = api_response.json()
     resource_response = requests.get(args.resource_listing_url)
-    resource_response = json.loads(resource_response.content)
+    resource_response = resource_response.json()
     resource_response['models'] = api_response['models']
     resource_response['apis'] = api_response['apis']
 

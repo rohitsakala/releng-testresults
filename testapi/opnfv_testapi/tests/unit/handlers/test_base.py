@@ -63,7 +63,8 @@ class TestBase(testing.AsyncHTTPTestCase):
                                        'opnfv-gerrit-functest-submitters',
                                        'opnfv-gerrit-qtip-submitters',
                                        'opnfv-gerrit-qtip-contributors',
-                                       'opnfv-gerrit-apex-submitters']
+                                       'opnfv-gerrit-apex-submitters',
+                                       'opnfv-gerrit-noProject-submitters']
                                    })
 
     def tearDown(self):
@@ -158,7 +159,6 @@ class TestBase(testing.AsyncHTTPTestCase):
             res = self.fetch(url,
                              method='DELETE',
                              headers=self.headers)
-
         return res.code, res.body
 
     def delete(self, *args):

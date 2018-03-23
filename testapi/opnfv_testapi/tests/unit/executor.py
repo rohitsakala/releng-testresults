@@ -91,7 +91,7 @@ def delete(excepted_status, excepted_response):
         def wrap(self):
             request = delete_request(self)
             if isinstance(request, tuple):
-                status, body = self.delete(request[0], *(request[1]))
+                status, body = self.delete(*request)
             else:
                 status, body = self.delete(request)
             if excepted_status == httplib.OK:

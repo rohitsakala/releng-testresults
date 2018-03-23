@@ -525,3 +525,38 @@ class TrustIndicatorCreate(command.Command):
                 ['installer', 'version', 'project'],
                 parsed_args),
             parsed_args.trust_indicator)
+
+
+class ScoreCreate(command.Command):
+
+    def get_parser(self, prog_name):
+        parser = super(ScoreCreate, self).get_parser(prog_name)
+        parser.add_argument('--scenario-name',
+                            type=str,
+                            required=True,
+                            help='Create score by scenario name')
+        parser.add_argument('--installer',
+                            required=True,
+                            help='Create score under installer name')
+        parser.add_argument('--version',
+                            required=True,
+                            help='Create score under version name')
+        parser.add_argument('--project',
+                            required=True,
+                            help='Create score under project name')
+        parser.add_argument('score',
+                            type=json.loads,
+                            help='score create request format :\n'
+                                 '\'{ "date": (string, optional),'
+                                 '"score" : (string, optional) }\',\n')
+        return parser
+
+    def take_action(self, parsed_args):
+        return self.app.client_manager.post(
+            urlparse.query_by(
+                resources_url(
+                    parsed_args.scenario_name,
+                    'scores'),
+                ['installer', 'version', 'project'],
+                parsed_args),
+            parsed_args.score)

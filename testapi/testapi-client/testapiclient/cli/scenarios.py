@@ -390,3 +390,102 @@ class ProjectPut(command.Command):
                 resources_url(parsed_args.scenario_name, 'projects'),
                 ['installer', 'version'],
                 parsed_args), parsed_args.project)
+
+
+class CustomCreate(command.Command):
+
+    def get_parser(self, prog_name):
+        parser = super(CustomCreate, self).get_parser(prog_name)
+        parser.add_argument('--scenario-name',
+                            type=str,
+                            required=True,
+                            help='Create custom by scenario name')
+        parser.add_argument('--installer',
+                            required=True,
+                            help='Create custom under installer name')
+        parser.add_argument('--version',
+                            required=True,
+                            help='Create custom under version name')
+        parser.add_argument('--project',
+                            required=True,
+                            help='Create custom under project name')
+        parser.add_argument('custom',
+                            nargs='+',
+                            help='Space sperated strings')
+        return parser
+
+    def take_action(self, parsed_args):
+        return self.app.client_manager.post(
+            urlparse.query_by(
+                resources_url(
+                    parsed_args.scenario_name,
+                    'customs'),
+                ['installer', 'version', 'project'],
+                parsed_args),
+            parsed_args.custom)
+
+
+class CustomDelete(command.Command):
+
+    def get_parser(self, prog_name):
+        parser = super(CustomDelete, self).get_parser(prog_name)
+        parser.add_argument('--scenario-name',
+                            required=True,
+                            type=str,
+                            help='Delete custom by scenario name')
+        parser.add_argument('--installer',
+                            required=True,
+                            help='Create custom under scenario name')
+        parser.add_argument('--version',
+                            required=True,
+                            help='Create custom under scenario name')
+        parser.add_argument('--project',
+                            required=True,
+                            help='Create custom under scenario name')
+        parser.add_argument('name',
+                            nargs='+',
+                            help='Delete custom by name')
+        return parser
+
+    def take_action(self, parsed_args):
+        return self.app.client_manager.delete(
+            urlparse.query_by(
+                resources_url(
+                    parsed_args.scenario_name,
+                    'customs'),
+                ['installer', 'version', 'project'],
+                parsed_args),
+            parsed_args.name)
+
+
+class CustomPut(command.Command):
+
+    def get_parser(self, prog_name):
+        parser = super(CustomPut, self).get_parser(prog_name)
+        parser.add_argument('--scenario-name',
+                            type=str,
+                            required=True,
+                            help='Update custom  by scenario name')
+        parser.add_argument('--installer',
+                            required=True,
+                            help='Update custom  under installer name')
+        parser.add_argument('--version',
+                            required=True,
+                            help='Update custom under version name')
+        parser.add_argument('--project',
+                            required=True,
+                            help='Update custom  under project name')
+        parser.add_argument('custom',
+                            nargs='+',
+                            help='space sperated strings')
+        return parser
+
+    def take_action(self, parsed_args):
+        return self.app.client_manager.put(
+            urlparse.query_by(
+                resources_url(
+                    parsed_args.scenario_name,
+                    'customs'),
+                ['installer', 'version', 'project'],
+                parsed_args),
+            parsed_args.custom)

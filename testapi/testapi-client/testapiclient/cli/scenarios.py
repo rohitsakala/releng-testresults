@@ -489,3 +489,39 @@ class CustomPut(command.Command):
                 ['installer', 'version', 'project'],
                 parsed_args),
             parsed_args.custom)
+
+
+class TrustIndicatorCreate(command.Command):
+
+    def get_parser(self, prog_name):
+        parser = super(TrustIndicatorCreate, self).get_parser(prog_name)
+        parser.add_argument('--scenario-name',
+                            type=str,
+                            required=True,
+                            help='Create trust indicator by scenario name')
+        parser.add_argument('--installer',
+                            required=True,
+                            help='Create trustindicator under installer name')
+        parser.add_argument('--version',
+                            required=True,
+                            help='Create trust indicator under version name')
+        parser.add_argument('--project',
+                            required=True,
+                            help='Create trust indicator under project name')
+        parser.add_argument('trust_indicator',
+                            type=json.loads,
+                            help='trust indicator create request format :\n'
+                                 '\'{ "date": (string, optional),'
+                                 '"status": (string, optional) }\',\n')
+        return parser
+
+    def take_action(self, parsed_args):
+        print parsed_args
+        return self.app.client_manager.post(
+            urlparse.query_by(
+                resources_url(
+                    parsed_args.scenario_name,
+                    'trust_indicators'),
+                ['installer', 'version', 'project'],
+                parsed_args),
+            parsed_args.trust_indicator)

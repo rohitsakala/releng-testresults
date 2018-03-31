@@ -117,8 +117,10 @@
                 $http.get(reqURL).success(function (data) {
                     ctrl.data = data;
                     ctrl.sortBy("name")
-                    keepState.filter.podFilter = {
-                        'name': ctrl.filterText
+                    if(ctrl.filterText != undefined){
+                        keepState.filter.podFilter = {
+                            'name': ctrl.filterText
+                        }
                     }
                 }).catch(function (data) {
                     ctrl.data = null;

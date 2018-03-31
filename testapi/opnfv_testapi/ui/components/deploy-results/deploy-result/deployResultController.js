@@ -21,7 +21,7 @@
 
     DeployResultController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal'
+        'confirmModal', 'dataFieldService'
     ];
 
     /**
@@ -30,12 +30,16 @@
      * through result declared in TestAPI.
      */
     function DeployResultController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal) {
+        raiseAlert, confirmModal, dataFieldService) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/deployresults';
         ctrl._id = $state.params['_id'];
         ctrl.loadDetails = loadDetails
-        ctrl.showDetails = showDetails
+        ctrl.data_field = {}
+
+        ctrl.json = {};
+        ctrl.json.string = '{"id": ""}';
+        ctrl.json.object = JSON.parse(ctrl.json.string);
 
         /**
          *Contact the testapi and retrevie the result details
@@ -46,6 +50,10 @@
             ctrl.podsRequest =
                 $http.get(resultUrl).success(function (data) {
                     ctrl.data = data;
+                    ctrl.object=JSON.stringify(ctrl.data.details)
+                    ctrl.json.object = JSON.parse(ctrl.object)
+                    delete ctrl.data.details;
+                    ctrl.data_field = dataFieldService.dataFunction(ctrl.data, ctrl.data_field)
                 }).catch(function (error) {
                     ctrl.data = null;
                     ctrl.showError = true;
@@ -53,13 +61,6 @@
                 });
         }
 
-        function showDetails(){
-            if(ctrl.details){
-                ctrl.details = false
-            }else{
-                ctrl.details = true
-            }
-        }
         ctrl.loadDetails();
     }
 })();

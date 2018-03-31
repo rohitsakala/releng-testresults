@@ -21,7 +21,7 @@
 
     PodController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal'
+        'confirmModal', 'dataFieldService'
     ];
 
     /**
@@ -30,11 +30,12 @@
      * through pod declared in TestAPI.
      */
     function PodController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal) {
+        raiseAlert, confirmModal, dataFieldService) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/pods';
         ctrl.name = $state.params['name'];
-        ctrl.loadDetails = loadDetails
+        ctrl.loadDetails = loadDetails;
+        ctrl.data_field = {};
 
         /**
          *Contact the testapi and retrevie the pod details
@@ -45,6 +46,7 @@
             ctrl.podsRequest =
                 $http.get(podUrl).success(function (data) {
                     ctrl.data = data;
+                    ctrl.data_field = dataFieldService.dataFunction(ctrl.data, ctrl.data_field)
                 }).catch(function (error) {
                     ctrl.data = null;
                     ctrl.showError = true;

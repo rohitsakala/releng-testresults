@@ -64,6 +64,21 @@
 
     angular
         .module('testapiApp')
+        .service('dataFieldService', function(){
+            this.dataFunction = dataFunction
+            function dataFunction(data, data_field){
+                Object.keys(data).forEach(function (key) {
+                    if (typeof data[key] === 'object' && data[key] != null) {
+                        return dataFunction(data[key], data_field);
+                    }
+                    data_field[key] = key.replace(/_/g, " ").trim();
+                });
+                return data_field;
+            }
+        });
+
+    angular
+        .module('testapiApp')
         .directive('dynamicModel', ['$compile', '$parse', function ($compile, $parse) {
             return {
                 restrict: 'A',

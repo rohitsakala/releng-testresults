@@ -3,49 +3,11 @@
     <div class="table-responsive">
         <table class="table"  ng-data="ctrl.data.pods">
             <tbody>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Id&nbsp;:</td>
-                    <td class="podsTableLeftTd">{{ctrl.data._id}}</td>
+                <tr ng-repeat-start="(index, detail) in ctrl.data_field"  style="padding:9px">
+                    <td class="podsTableTd">{{detail | capitalize}}&nbsp;:</td>
+                    <td width="90%" class="podsTableLeftTd">{{ctrl.data[index]}}</td>
                 </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Pod&nbsp;Name:</td>
-                    <td  width="90%" class="podsTableLeftTd">{{ctrl.data.pod_name}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Project&nbsp;Name:</td>
-                    <td width="90%" class="podsTableLeftTd">{{ctrl.data.project_name}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Case&nbsp;Name&nbsp;:</td>
-                    <td width="90%" class="podsTableLeftTd">{{ctrl.data.case_name}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Installer&nbsp;:</td>
-                    <td  width="90%" class="podsTableLeftTd">{{ctrl.data.installer}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Version&nbsp;:</td>
-                    <td  width="90%" class="podsTableLeftTd">{{ctrl.data.version}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Scenario&nbsp;:</td>
-                    <td width="90%" class="podsTableLeftTd">{{ctrl.data.scenario}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Build&nbsp;tag&nbsp;:</td>
-                    <td width="90%" class="podsTableLeftTd">{{ctrl.data['build_tag']}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Criteria&nbsp;:</td>
-                    <td  width="90%" class="podsTableLeftTd">{{ctrl.data.criteria}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Start&nbsp;Date:</td>
-                    <td  width="90%" class="podsTableLeftTd">{{ctrl.data.start_date}}</td>
-                </tr>
-                <tr style="padding:9px">
-                    <td class="podsTableTd">Stop&nbsp;Date&nbsp;:</td>
-                    <td width="90%"  class="podsTableLeftTd">{{ctrl.data.stop_date}}</td>
+                <tr ng-repeat-end=>
                 </tr>
                 <tr style="padding:9px">
                     <td class="podsTableTd">Details&nbsp;:</td>

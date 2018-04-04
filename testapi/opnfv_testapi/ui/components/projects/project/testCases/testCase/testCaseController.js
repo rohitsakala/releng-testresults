@@ -21,7 +21,7 @@
 
         TestCaseController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal'
+        'confirmModal', 'dataFieldService'
     ];
 
     /**
@@ -30,13 +30,14 @@
      * through projects declared in TestAPI.
      */
     function TestCaseController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal) {
+        raiseAlert, confirmModal, dataFieldService) {
         var ctrl = this;
         ctrl.name = $state.params['name'];
         ctrl.projectName = $state.params['project_name'];
         ctrl.url = testapiApiUrl + '/projects/' + ctrl.projectName + "/cases/" + ctrl.name;
 
         ctrl.loadDetails = loadDetails;
+        ctrl.data_field = {}
 
         /**
          * This will contact the TestAPI to get a listing of declared projects.
@@ -46,6 +47,7 @@
             ctrl.projectsRequest =
                 $http.get(ctrl.url).success(function (data) {
                     ctrl.data = data;
+                    ctrl.data_field = dataFieldService.dataFunction(ctrl.data, ctrl.data_field)
                 }).catch(function (error) {
                     ctrl.data = null;
                     ctrl.showError = true;

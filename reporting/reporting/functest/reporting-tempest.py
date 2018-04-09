@@ -83,8 +83,16 @@ for version in rp_utils.get_config('general.versions'):
 
                 # retrieve results
                 # ****************
-                nb_tests_run = result['details']['tests']
-                nb_tests_failed = result['details']['failures']
+                try:
+                    nb_tests_run = result['details']['success_number']
+                    nb_tests_failed = result['details']['failures_number']
+                except KeyError:
+                    try:
+                        nb_tests_run = result['details']['tests']
+                        nb_tests_failed = result['details']['failures']
+                    except KeyError:
+                        logger.error("Impossible to retrieve results")
+
                 logger.debug("nb_tests_run= %s", nb_tests_run)
                 logger.debug("nb_tests_failed= %s", nb_tests_failed)
 
@@ -140,12 +148,14 @@ for version in rp_utils.get_config('general.versions'):
                 # Error management
                 # ****************
                 try:
-                    errors = result['details']['errors']
-                    logger.info("errors: %s", errors)
-                    result['errors'] = errors
-                except Exception:  # pylint: disable=broad-except
-                    logger.error("Error field not present (Brahamputra runs?)")
-
+                    errors = result['details']['failures']
+                except KeyError:
+                    try:
+                        errors = result['details']['errors']
+                    except KeyError:
+                        logger.error("Error field not present (old runs?)")
+                logger.info("errors: %s", errors)
+                result['errors'] = errors
         templateLoader = jinja2.FileSystemLoader(".")
         templateEnv = jinja2.Environment(loader=templateLoader,
                                          autoescape=True)

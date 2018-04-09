@@ -120,7 +120,7 @@ for version in VERSIONS:
                         LOGGER.debug("vIMS deployment: %ss", res_vnf)
                         LOGGER.debug("VNF testing: %ss", res_test_vnf)
                         LOGGER.debug("VNF testing results: %s", format_result)
-                    except Exception as err:  # pylint: disable=broad-except
+                    except KeyError as err:  # pylint: disable=broad-except
                         LOGGER.error("Uncomplete data %s", err)
                     LOGGER.debug("----------------------------------------")
 

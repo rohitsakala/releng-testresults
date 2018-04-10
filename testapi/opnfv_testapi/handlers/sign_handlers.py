@@ -46,7 +46,7 @@ class SigninReturnHandler(SignBaseHandler):
                 dbapi.db_update(self.table, q_user, login_user)
 
             self.clear_cookie(constants.TESTAPI_ID)
-            self.set_secure_cookie(constants.TESTAPI_ID, user)
+            self.set_secure_cookie(constants.TESTAPI_ID, user, 1)
 
             self.redirect(url=CONF.ui_url)
 

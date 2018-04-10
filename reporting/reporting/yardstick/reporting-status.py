@@ -140,8 +140,7 @@ def generate_reporting_page(version, installer, archi, scenarios, period):
                                                  percent)
 
         LOG.info("--------------------------")
-    if scenario_data:
-        generate_page(scenario_data, installer, period, version, archi)
+    generate_page(scenario_data, installer, period, version, archi)
 
 
 def main():

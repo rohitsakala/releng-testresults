@@ -65,12 +65,14 @@ def is_reource_tied(method):
         }
         if self.table in tied_maps:
             if method.__name__ == '_update':
-                if 'name' not in self.json_args:
-                    ret = yield gen.coroutine(method)(self, *args, **kwargs)
-                    raise gen.Return(ret)
+                if 'name' in self.json_args:
+                    if self.json_args['name'] == kwargs.get('query')['name']:
+                        ret = yield gen.coroutine(method)(
+                            self, *args, **kwargs)
+                        raise gen.Return(ret)
             query_data[tied_maps[self.table][1]] = kwargs.get('query')['name']
-            data = yield dbapi.db_find_one(tied_maps[self.table][0],
-                                           query_data)
+            data = yield dbapi.db_find_one(
+                tied_maps[self.table][0], query_data)
             if data:
                 raises.Unauthorized(message.tied_with_resource())
         ret = yield gen.coroutine(method)(self, *args, **kwargs)

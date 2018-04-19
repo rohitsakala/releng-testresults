@@ -198,8 +198,8 @@ describe('testing the result page for anonymous user', function () {
         browser.wait(EC.urlContains(baseURL+ '#/results'), 10000);
         var resultLink = element(by.linkText('0e2643f4')).click();
         browser.wait(EC.urlContains(baseURL+ '#/result/5a45170bbb2092000e2643f4'), 10000);
-        expect(element(by.cssContainingText(".key.col-md-1","failures")).isDisplayed()).toBe(true);
-        expect(element(by.cssContainingText(".leaf-value.col-md-11","0")).isDisplayed()).toBe(true);
+        expect(element(by.cssContainingText(".key.col-md-2","failures")).isDisplayed()).toBe(true);
+        expect(element(by.cssContainingText(".leaf-value.col-md-10","0")).isDisplayed()).toBe(true);
     });
 
     it('Should show the results in results page related to the filters', function () {

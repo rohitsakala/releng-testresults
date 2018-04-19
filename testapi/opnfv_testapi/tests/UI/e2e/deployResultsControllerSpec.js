@@ -383,7 +383,7 @@ describe('testing the result page for user', function () {
         buttonClear.click();
         var row = element.all(by.repeater('(index, result) in ctrl.data.deployresults')).first();
         var cells = row.all(by.tagName('td'));
-        expect(cells.get(0).getText()).toContain("3c9f8d62");
+        expect(cells.get(0).getText()).toContain("3c9f8d63");
     });
 
     it('view the deploy results ', function () {

@@ -21,7 +21,7 @@
 
     PodsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal', 'keepState', 'sortService'
+        'confirmModal', 'keepState', 'sortService', '$timeout'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through pods declared in TestAPI.
      */
     function PodsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, keepState, sortService) {
+        raiseAlert, confirmModal, keepState, sortService, $timeout) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/pods';
         ctrl.checkBox = []
@@ -48,6 +48,18 @@
         ctrl.batchDelete = batchDelete;
         ctrl.viewPod = viewPod
         ctrl.sortBy = sortBy
+        ctrl.toastError = toastError
+        ctrl.toastSuccess = toastSuccess
+
+        function toastError() {
+            ctrl.showError = true
+            $timeout(function(){ ctrl.showError = false;}, 3000);
+        }
+
+        function toastSuccess() {
+            ctrl.showSuccess = true
+            $timeout(function(){ ctrl.showSuccess = false;}, 3000);
+        }
 
         function sortBy(field){
             ctrl.data.pods = sortService.sortFunction(ctrl.data.pods, field , ctrl.sorting[field] )
@@ -84,17 +96,19 @@
                 };
                 ctrl.podsRequest =
                     $http.post(pods_url, body).success(function (data) {
-                        ctrl.showSuccess = true ;
                         ctrl.success = "Create Success"
+                        ctrl.toastSuccess()
                         ctrl.listPods();
+                        return true;
                     }).catch(function (data)  {
-                        ctrl.showError = true;
                         ctrl.error = data.statusText;
+                        ctrl.toastError()
+                        return false;
                     });
             }
             else{
-                ctrl.showError = true;
                 ctrl.error = 'Name is missing.'
+                ctrl.toastError()
             }
         }
 
@@ -124,8 +138,8 @@
                     }
                 }).catch(function (data) {
                     ctrl.data = null;
-                    ctrl.showError = true;
                     ctrl.error = data.statusText;
+                    ctrl.toastError()
                 });
         }
 
@@ -139,12 +153,12 @@
         function podDelete(podName){
             var pods_url = ctrl.url + "/" + podName
             $http.delete(pods_url).success(function(){
-                ctrl.showSuccess = true ;
                 ctrl.success = "Delete Success"
+                ctrl.toastSuccess()
                 ctrl.listPods();
             }).catch(function (data)  {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError()
             });
         }
 
@@ -247,9 +261,10 @@
          * inputs.
          */
         function confirm() {
-            $uibModalInstance.close();
             if (angular.isDefined(ctrl.data.successHandler)) {
-                ctrl.data.successHandler(ctrl.pod);
+                if(ctrl.data.successHandler(ctrl.pod)){
+                    $uibModalInstance.close();
+                }
             }
         }
 

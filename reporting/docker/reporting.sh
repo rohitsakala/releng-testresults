@@ -21,7 +21,7 @@ done
 # copy images, js, css, 3rd_party
 cp -Rf 3rd_party display
 cp -Rf css display
-cp -Rf html/* display
+cp -Rf 3rd_party/html/* display
 cp -Rf img display
 cp -Rf js display
 

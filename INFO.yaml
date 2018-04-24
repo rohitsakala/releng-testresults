@@ -1,0 +1,42 @@
+---
+subproject: 'Test Results Collecting and Analyzing (TestResults)'
+project_category: 'Integration & Testing'
+lifecycle_state: 'Incubation'
+subproject_lead: &opnfv_testresults_ptl
+    name: 'SerenaFeng'
+    email: 'feng.xiaowei@zte.com.cn'
+    id: 'serenafeng'
+    company: 'ZTE'
+    timezone: 'China'
+primary_contact: *opnfv_testresults_ptl
+issue_tracking:
+    type: 'jira'
+    url: 'https://jira.opnfv.org/projects/RELENG'
+    key: 'RELENG'
+mailing_list:
+    type: 'mailman2'
+    url: 'opnfv-tech-discuss@lists.opnfv.org'
+    tag: '[testresults]'
+meetings:
+    - type: 'appearin'
+      url: 'https://appear.in/serenafeng'
+      repeats: 'weekly'
+      day: 'Thursday'
+      time: '13:30 UTC'
+committers:
+    - <<: *opnfv_testresults_ptl
+    - name: 'Fatih Degirmenci'
+      company: 'Ericsson'
+      email: 'fatih.degirmenci@ericsson.com'
+      id: 'fdegir'
+      timezone: 'Europe/Stockholm'
+    - name: 'Morgan Richomme'
+      email: 'morgan.richomme@orange.com'
+      company: 'Orange'
+      id: 'mrichomme'
+      timezone: 'Europe/Paris'
+    - name: 'Jose Lausuch'
+      company: 'SUSE'
+      email: 'jalausuch@suse.com'
+      id: 'jose.lausuch'
+      timezone: 'Europe/Madrid'

@@ -230,7 +230,7 @@ for version in versions:
                             else:
                                 LOGGER.debug("No results found")
 
-                        items[s] = testCases2BeDisplayed
+                    items[s] = testCases2BeDisplayed
                 except Exception:  # pylint: disable=broad-except
                     LOGGER.error("Error installer %s, version %s, scenario %s",
                                  installer, version, s)

@@ -324,8 +324,12 @@ describe('testing the Project Link for user who is in submitter group', function
         name.sendKeys('testproject');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Project is successfully created."))
+
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Project is successfully created."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Show error if user doesnt have permission to Create the Project', function () {
@@ -340,7 +344,10 @@ describe('testing the Project Link for user who is in submitter group', function
         description.sendKeys('demoDescription');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error")).isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Showing error when creating with a empty name ', function () {
@@ -352,8 +359,11 @@ describe('testing the Project Link for user who is in submitter group', function
         browser.wait(EC.visibilityOf(name), 5000);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
+        browser.ignoreSynchronization = true;
         expect(element(by.cssContainingText(".alert","Name is missing."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Show error when user click the create button with an already existing name', function () {
@@ -368,7 +378,10 @@ describe('testing the Project Link for user who is in submitter group', function
         description.sendKeys('demoDescription');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error")).isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('cancel the delete confimation modal of the project ', function () {
@@ -388,8 +401,11 @@ describe('testing the Project Link for user who is in submitter group', function
         .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Projects is successfully deleted"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Projects is successfully deleted"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it(' Show error if user doesnt has permission to delete the projects ', function () {
@@ -442,7 +458,10 @@ describe('testing the Project Link for user who is in submitter group', function
         deleteOperation.click();
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error")).isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('cancel the Edit modal of the Project ', function () {
@@ -468,8 +487,12 @@ describe('testing the Project Link for user who is in submitter group', function
         name.sendKeys('test1');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click()
-        expect(element(by.cssContainingText(".alert","Project is successfully updated."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Project is successfully updated."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
+
     });
 
     it('Show error if user doesnt has permission to edit the projects ', function () {
@@ -526,7 +549,10 @@ describe('testing the Project Link for user who is in submitter group', function
         name.sendKeys('test1');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click()
-        expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error")).isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Batch Delete the projects ', function () {
@@ -537,8 +563,12 @@ describe('testing the Project Link for user who is in submitter group', function
         buttonDelete.click();
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Projects is successfully deleted"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Projects is successfully deleted"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
+
     });
 
     it('If backend is not responding then show error when user click the create button',function(){
@@ -570,8 +600,10 @@ describe('testing the Project Link for user who is in submitter group', function
         name.sendKeys('testproject');
         details.sendKeys('demoDescription');
         var buttonOK = element(by.buttonText('Ok'));
-        buttonOK.click().then(function(){
-            expect(element(by.css(".alert.alert-danger")).isDisplayed()).toBe(true);
-        });
+        buttonOK.click()
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error")).isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 })

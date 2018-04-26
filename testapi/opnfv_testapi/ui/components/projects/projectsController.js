@@ -21,7 +21,7 @@
 
         ProjectsController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl',
-        'raiseAlert', 'confirmModal', 'authenticate', 'keepState', 'sortService'
+        'raiseAlert', 'confirmModal', 'authenticate', 'keepState', 'sortService', '$timeout'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through projects declared in TestAPI.
      */
     function ProjectsController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, authenticate, keepState, sortService) {
+        raiseAlert, confirmModal, authenticate, keepState, sortService, $timeout) {
         var ctrl = this;
         ctrl.url = testapiApiUrl + '/projects';
 
@@ -51,27 +51,41 @@
         ctrl.name = '';
         ctrl.details = '';
         ctrl.ascending = false;
+        ctrl.toastError = toastError
+        ctrl.toastSuccess = toastSuccess
+
+        function toastError() {
+            ctrl.showError = true
+            $timeout(function(){ ctrl.showError = false;}, 7000);
+        }
+
+        function toastSuccess() {
+            ctrl.showSuccess = true
+            $timeout(function(){ ctrl.showSuccess = false;}, 7000);
+        }
 
         /**
          * This will contact the TestAPI to create a new project.
          */
         function create(project) {
-            ctrl.showError = false;
-            ctrl.showSuccess = false;
             var projects_url = ctrl.url;
             var body = {
                 name: project.name,
                 description: project.description
             };
-            ctrl.projectsRequest =
-                $http.post(projects_url, body).success(function (data){
-                    ctrl.showSuccess = true ;
-                    ctrl.success = "Project is successfully created."
+            ctrl.projectsRequest = $http.post(projects_url, body)
+            ctrl.projectsRequest.success(function (data){
+                    ctrl.success = "Project is successfully created.";
                     ctrl.listProjects();
+                    ctrl.toastSuccess();
+                    ctrl.request = true;
                 }).catch(function (data) {
-                    ctrl.showError = true;
                     ctrl.error = data.statusText;
+                    ctrl.toastError();
+                    ctrl.request = false;
                 });
+
+            return ctrl.projectsRequest
         }
 
         function sortByName(){
@@ -135,16 +149,17 @@
             ctrl.showError = false;
             ctrl.showSuccess = false;
             var projectUrl = ctrl.url + '/' + name;
-            ctrl.testCasesRequest =
-                $http.put(projectUrl, project).success(function (data){
-                    ctrl.showSuccess = true ;
+            ctrl.projectRequest = $http.put(projectUrl, project)
+            ctrl.projectRequest.success(function (data){
                     ctrl.success = "Project is successfully updated."
-                    listProjects();
+                    ctrl.listProjects();
+                    ctrl.toastSuccess();
                 })
                 .catch(function (data) {
-                    ctrl.showError = true;
                     ctrl.error = data.statusText;
+                    ctrl.toastError();
                 });
+            return ctrl.projectRequest
         }
 
         /**
@@ -174,8 +189,8 @@
                     }
                 }).catch(function (data)  {
                     ctrl.data = null;
-                    ctrl.showError = true;
                     ctrl.error = data.statusText;
+                    ctrl.toastError();
                 });
         }
 
@@ -190,13 +205,12 @@
         function projectDelete(projectName){
             var projectUrl = ctrl.url + "/" + projectName
             $http.delete(projectUrl).success(function(){
-                ctrl.showSuccess = true ;
                 ctrl.success = "Projects is successfully deleted"
+                ctrl.toastSuccess();
                 ctrl.listProjects();
             }).catch(function (data)  {
-                ctrl.showError = true;
-                ctrl.showSuccess = false;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
         }
 
@@ -277,11 +291,15 @@
         function confirm() {
             if (angular.isDefined(ctrl.data.successHandler)) {
                 if(ctrl.project.name != ""){
-                    $uibModalInstance.close();
+                    var success = false;
                     if(ctrl.data.project){
-                        ctrl.data.successHandler(ctrl.projectName, ctrl.project);
+                       ctrl.data.successHandler(ctrl.projectName, ctrl.project).success(function (data){
+                            $uibModalInstance.close();
+                       })
                     }else{
-                        ctrl.data.successHandler(ctrl.project);
+                        ctrl.data.successHandler(ctrl.project).success(function (data){
+                            $uibModalInstance.close();
+                        })
                     }
                 }else{
                     ctrl.showCreateError = true;

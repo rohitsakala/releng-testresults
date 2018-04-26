@@ -3,6 +3,7 @@ import json
 from testapiclient.client import pods
 from testapiclient.utils import command
 from testapiclient.utils import urlparse
+from testapiclient.models import pods as pm
 
 
 def pods_url():
@@ -61,8 +62,10 @@ class PodCreate(command.ShowOne):
         parser.add_argument('pod',
                             type=json.loads,
                             help='Pod create request format :\n'
-                                 '\'{"role": "", "name": "", "details": "", '
-                                 '"mode": ""}\',\n role should be either '
+                                 '\'{}\''.format(json.dumps(
+                                     pm.PodCreateRequest().__dict__
+                                     )) +
+                                 '\n role should be either '
                                  '"community-ci" or "production-ci", and '
                                  'mode should be either "metal" or "virtual.')
         return parser

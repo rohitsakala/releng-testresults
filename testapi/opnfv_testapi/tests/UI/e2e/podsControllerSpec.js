@@ -78,7 +78,7 @@ describe('testing the Pods page for anonymous user', function () {
 
     it('Sort the results by mode', function () {
         browser.get(baseURL+'#/pods');
-        var sortMode = element(by.xpath('//*[@id="ng-app"]/body/div/div[6]/div/table/thead/tr/th[4]/a[2]/span'))
+        var sortMode = element(by.xpath('//*[@id="ng-app"]/body/div/div[5]/div/table/thead/tr/th[4]/a[2]/span'))
         sortMode.click();
         var row = element.all(by.repeater('(index, pod) in ctrl.data.pods')).first();
         var cells = row.all(by.tagName('td'));
@@ -87,7 +87,7 @@ describe('testing the Pods page for anonymous user', function () {
 
     it('Sort the results by role', function () {
         browser.get(baseURL+'#/pods');
-        var sortRole = element(by.xpath('//*[@id="ng-app"]/body/div/div[6]/div/table/thead/tr/th[3]/a[2]/span'))
+        var sortRole = element(by.xpath('//*[@id="ng-app"]/body/div/div[5]/div/table/thead/tr/th[3]/a[2]/span'))
         sortRole.click();
         var row = element.all(by.repeater('(index, pod) in ctrl.data.pods')).first();
         var cells = row.all(by.tagName('td'));
@@ -262,8 +262,11 @@ describe('testing the Pods page for authorized user', function () {
         .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Delete Success"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Delete Success"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Delete the pods ', function () {
@@ -272,8 +275,11 @@ describe('testing the Pods page for authorized user', function () {
         deleteOperation.click();
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Delete Success"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Delete Success"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Create the pod', function () {
@@ -286,8 +292,11 @@ describe('testing the Pods page for authorized user', function () {
         name.sendKeys('test1');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Create Success"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Create Success"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Showing error when creating with a empty name ', function () {
@@ -299,8 +308,11 @@ describe('testing the Pods page for authorized user', function () {
         browser.wait(EC.visibilityOf(name), 5000);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click()
-        expect(element(by.cssContainingText(".alert","Name is missing."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".error.show","Name is missing."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('cancel the delete confimation modal of the pod ', function () {
@@ -356,8 +368,11 @@ describe('testing the Pods page for authorized user', function () {
         deleteOperation.click();
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.css(".alert.alert-danger"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error.show"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('view the test case ', function () {
@@ -394,8 +409,13 @@ describe('testing the Pods page for authorized user', function () {
             },
         ]);
         browser.get(baseURL+"#/pods");
-        expect(element(by.css(".alert.alert-danger"))
+        var EC = browser.ExpectedConditions;
+        browser.wait(EC.urlContains(baseURL+ '/#/pods'), 5000);
+        browser.ignoreSynchronization = true;
+        expect(element(by.css(".error.show"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
 });

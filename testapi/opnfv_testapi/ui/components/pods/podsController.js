@@ -94,17 +94,17 @@
                     role: pod.role,
                     details: pod.details
                 };
-                ctrl.podsRequest =
-                    $http.post(pods_url, body).success(function (data) {
+                ctrl.podsRequest = $http.post(pods_url, body)
+
+                ctrl.podsRequest.success(function (data) {
                         ctrl.success = "Create Success"
                         ctrl.toastSuccess()
                         ctrl.listPods();
-                        return true;
                     }).catch(function (data)  {
                         ctrl.error = data.statusText;
                         ctrl.toastError()
-                        return false;
                     });
+                    return ctrl.podsRequest
             }
             else{
                 ctrl.error = 'Name is missing.'
@@ -262,9 +262,9 @@
          */
         function confirm() {
             if (angular.isDefined(ctrl.data.successHandler)) {
-                if(ctrl.data.successHandler(ctrl.pod)){
+                ctrl.data.successHandler(ctrl.pod).success( function(data){
                     $uibModalInstance.close();
-                }
+                })
             }
         }
 

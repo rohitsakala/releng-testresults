@@ -6,7 +6,22 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-wait');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-convert');
     grunt.initConfig({
+        convert: {
+            options: {
+              explicitArray: false,
+            },
+            json2xml: {
+                options: {
+                    xml: {
+                      header: true
+                    }
+                  },
+              src: ['../tests/UI/coverage/coverage.json'],
+                  dest: '../tests/UI/coverage/coverage.xml'
+            }
+        },
         connect: {
             server: {
                 options: {
@@ -159,6 +174,7 @@ module.exports = function (grunt) {
         'wait:default',
         'protractor_coverage',
         'makeReport',
+        'convert',
         'shell:deleteFiles'
     ]);
 }

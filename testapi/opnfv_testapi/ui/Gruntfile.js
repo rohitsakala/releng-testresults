@@ -126,7 +126,7 @@ module.exports = function (grunt) {
         },
         protractor_coverage: {
             options: {
-                keepAlive: true,
+                keepAlive: false,
                 noColor: false,
                 coverageDir: '../tests/UI/coverage',
                 args: {
@@ -159,6 +159,22 @@ module.exports = function (grunt) {
     grunt.registerTask('test', [
         'karma:unit'
     ]);
+
+    grunt.registerTask('forceOn', 'turns the --force option ON',
+    function() {
+      if ( !grunt.option( 'force' ) ) {
+        grunt.config.set('forceStatus', true);
+        grunt.option( 'force', true );
+      }
+    });
+
+  grunt.registerTask('forceOff', 'turns the --force option Off',
+    function() {
+      if ( grunt.config.get('forceStatus') ) {
+        grunt.option( 'force', false );
+      }
+    });
+
     grunt.registerTask('e2e', [
         'copy:assets',
         'copy:components',
@@ -172,7 +188,9 @@ module.exports = function (grunt) {
         'shell:updateSelenium',
         'shell:startSelenium',
         'wait:default',
+        'forceOn',
         'protractor_coverage',
+        'forceOff',
         'makeReport',
         'convert',
         'shell:deleteFiles'

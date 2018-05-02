@@ -303,7 +303,7 @@ json-tree .leaf-value{
   border-radius: 10px;
   padding: 16px;
   position: fixed;
-  z-index: 1;
+  z-index: 9999;
   left: 50%;
   bottom: 30px;
 }

@@ -21,7 +21,7 @@
 
         TestCasesController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal', 'authenticate'
+        'confirmModal', 'authenticate', '$timeout'
     ];
 
     /**
@@ -31,7 +31,7 @@
      * in them.
      */
     function TestCasesController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, authenticate) {
+        raiseAlert, confirmModal, authenticate, $timeout) {
         var ctrl = this;
         ctrl.loadDetails = loadDetails;
         ctrl.name = $state.params['name'];
@@ -49,29 +49,40 @@
 
         ctrl.checkBox = [];
         ctrl.checkBoxList = [];
+        ctrl.toastError = toastError
+        ctrl.toastSuccess = toastSuccess
+
+        function toastError() {
+            ctrl.showError = true
+            $timeout(function(){ ctrl.showError = false;}, 3000);
+        }
+
+        function toastSuccess() {
+            ctrl.showSuccess = true
+            $timeout(function(){ ctrl.showSuccess = false;}, 3000);
+        }
 
         /**
          * This will contact the TestAPI to create a new test case.
          */
         function createTestCase(name, testcase) {
-            ctrl.showError = false;
-            ctrl.showSuccess = false;
             if(testcase.name != "" && testcase.name!=null){
                 var testCase_url = ctrl.requestUrl;
-                ctrl.testCasesRequest =
-                    $http.post(testCase_url, testcase).success(function (data){
-                        ctrl.showSuccess = true ;
-                        ctrl.successMessage = "Testcase is successfully created."
+                ctrl.testCasesRequest = $http.post(testCase_url, testcase)
+                ctrl.testCasesRequest.success(function (data){
+                        ctrl.success = "Testcase is successfully created."
                         loadDetails();
+                        ctrl.toastSuccess()
                     })
                     .catch(function (data) {
-                        ctrl.showError = true;
                         ctrl.error = data.statusText;
+                        ctrl.toastError();
                     });
+                return ctrl.testCasesRequest;
             }
             else{
-                ctrl.showError = true;
                 ctrl.error = 'Name is missing.'
+                ctrl.toastError();
             }
         }
 
@@ -114,24 +125,23 @@
          * This will contact the TestAPI to update an existing test case.
          */
         function updateTestCase(name, testCase) {
-            ctrl.showError = false;
-            ctrl.showSuccess = false;
             if(testCase.name != ""){
                 var testCase_url = ctrl.requestUrl + '/' + name;
-                ctrl.testCasesRequest =
-                    $http.put(testCase_url, testCase).success(function (data){
-                        ctrl.showSuccess = true ;
-                        ctrl.successMessage = "Test case is successfully updated"
+                ctrl.testCasesRequest = $http.put(testCase_url, testCase)
+                ctrl.testCasesRequest.success(function (data){
+                        ctrl.success = "Test case is successfully updated"
                         loadDetails();
+                        ctrl.toastSuccess();
                     })
                     .catch(function (data) {
-                        ctrl.showError = true;
                         ctrl.error = data.statusText;
+                        ctrl.toastError()
                     });
+                return ctrl.testCasesRequest;
             }
             else{
-                ctrl.showError = true;
                 ctrl.error = 'Name is missing.'
+                ctrl.toastError()
             }
         }
 
@@ -139,16 +149,14 @@
          * This will contact the TestAPI to delete an existing test case.
         */
         function deleteTestCase(name) {
-            ctrl.showError = false;
-            ctrl.showSuccess = false;
             ctrl.testCasesRequest =
             $http.delete(ctrl.requestUrl+"/"+name).success(function (data) {
                 loadDetails();
-                ctrl.showSuccess = true ;
-                ctrl.successMessage = "Test case is successfully deleted"
+                ctrl.success = "Test case is successfully deleted";
+                ctrl.toastSuccess();
             }).catch(function (error) {
-                ctrl.showError = true;
-                ctrl.error = data.statusText;
+                ctrl.error = error.statusText;
+                ctrl.toastError();
             });
         }
 
@@ -218,8 +226,8 @@
                     ctrl.data = data;
                 }).catch(function (error) {
                     ctrl.data = null;
-                    ctrl.showError = true;
                     ctrl.error = error.statusText;
+                    ctrl.toastError()
                 });
         }
         ctrl.loadDetails();
@@ -271,9 +279,15 @@
          * inputs.
          */
         function confirm() {
-            $uibModalInstance.close();
             if (angular.isDefined(ctrl.data.successHandler)) {
-                ctrl.data.successHandler(ctrl.name, ctrl.testcase);
+                if(ctrl.testcase.name){
+                    ctrl.data.successHandler(ctrl.name, ctrl.testcase).success( function(){
+                        $uibModalInstance.close();
+                    })
+                }
+                else{
+                    ctrl.data.successHandler(ctrl.name, ctrl.testcase)
+                }
             }
         }
 

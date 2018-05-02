@@ -550,8 +550,11 @@ describe('testing the test cases page for user who is in submitter group', funct
         name.sendKeys('test');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Testcase is successfully created."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Testcase is successfully created."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('Showing error when creating with a empty name ', function () {
@@ -565,8 +568,11 @@ describe('testing the test cases page for user who is in submitter group', funct
         browser.wait(EC.visibilityOf(name), 5000);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Name is missing."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".error.show","Name is missing."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('cancel the delete confimation modal of the test case ', function () {
@@ -590,8 +596,11 @@ describe('testing the test cases page for user who is in submitter group', funct
         deleteOperation.click();
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Test case is successfully deleted"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Test case is successfully deleted"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('cancel the Edit modal of the test case ', function () {
@@ -621,8 +630,11 @@ describe('testing the test cases page for user who is in submitter group', funct
         name.sendKeys('test1');
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Test case is successfully updated"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Test case is successfully updated"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it('view the test case ', function () {
@@ -646,7 +658,10 @@ describe('testing the test cases page for user who is in submitter group', funct
         buttonDelete.click();
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Test case is successfully deleted"))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Test case is successfully deleted"))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 })

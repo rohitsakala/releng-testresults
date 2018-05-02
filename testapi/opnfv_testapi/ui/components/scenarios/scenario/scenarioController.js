@@ -21,7 +21,7 @@
 
         ScenarioController.$inject = [
         '$scope', '$http', '$filter', '$state', '$window', '$uibModal', 'testapiApiUrl','raiseAlert',
-        'confirmModal', 'authenticate'
+        'confirmModal', 'authenticate', '$timeout'
     ];
 
     /**
@@ -30,7 +30,7 @@
      * through Scenario declared in TestAPI.
      */
     function ScenarioController($scope, $http, $filter, $state, $window, $uibModal, testapiApiUrl,
-        raiseAlert, confirmModal, authenticate) {
+        raiseAlert, confirmModal, authenticate, $timeout) {
         var ctrl = this;
         ctrl.name = $state.params['name'];
         ctrl.url = testapiApiUrl + '/scenarios?name=' + ctrl.name;
@@ -73,7 +73,18 @@
         ctrl.buttonInstaller = true
         ctrl.buttonVersion = true
         ctrl.buttonProject = true
+        ctrl.toastError = toastError
+        ctrl.toastSuccess = toastSuccess
 
+        function toastError() {
+            ctrl.showError = true
+            $timeout(function(){ ctrl.showError = false;}, 3000);
+        }
+
+        function toastSuccess() {
+            ctrl.showSuccess = true
+            $timeout(function(){ ctrl.showSuccess = false;}, 3000);
+        }
         /**
          * This will contact the TestAPI to get a listing of declared projects.
          */
@@ -84,8 +95,8 @@
                     ctrl.data = data;
                 }).catch(function (error) {
                     ctrl.data = null;
-                    ctrl.showError = true;
                     ctrl.error = error.statusText
+                    ctrl.toastError()
                 });
         }
 
@@ -203,13 +214,13 @@
         function deleteInstaller(data){
             ctrl.installerReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/installers"
             $http.delete(ctrl.installerReqest, {data: data.installers, headers: {'Content-Type': 'application/json'}}).success(function (data){
-                ctrl.showSuccess = true ;
                 ctrl.success = "Installer is successfully deleted."
+                ctrl.toastSuccess();
                 ctrl.loadDetails();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError()
             });
         }
 
@@ -225,16 +236,18 @@
         function addInstaller(installer){
             var installers = []
             installers.push(installer)
-            ctrl.installerReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/installers"
-            $http.post(ctrl.installerReqest, installers).success(function (data){
-                ctrl.showSuccess = true ;
+            ctrl.installerRequestUrl = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/installers"
+            ctrl.installerRequest = $http.post(ctrl.installerRequestUrl, installers)
+            ctrl.installerRequest.success(function (data){
                 ctrl.success = "Installers are successfully updated."
                 ctrl.loadDetails();
+                ctrl.toastSuccess();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
+            return ctrl.installerRequest
         }
 
         function openAddInstaller(){
@@ -254,16 +267,18 @@
         }
 
         function addVersion(versions, installer){
-            ctrl.versionReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/versions?installer="+installer
-            $http.post(ctrl.versionReqest, versions).success(function (data){
-                ctrl.showSuccess = true ;
+            ctrl.versionRequestUrl = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/versions?installer="+installer
+            ctrl.versionRequest = $http.post(ctrl.versionRequestUrl, versions)
+            ctrl.versionRequest.success(function (data){
                 ctrl.success = "Versions are successfully updated."
                 ctrl.loadDetails();
+                ctrl.toastSuccess()
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError()
             });
+            return ctrl.versionRequest;
         }
 
         function openDeleteVersionModal(version, installer){
@@ -279,13 +294,13 @@
         function deleteVersion(data){
             ctrl.versionReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/versions?installer="+data.installer
             $http.delete(ctrl.versionReqest, {data: data.version, headers: {'Content-Type': 'application/json'}}).success(function (data){
-                ctrl.showSuccess = true ;
                 ctrl.success = "Versions are successfully deleted."
                 ctrl.loadDetails();
+                ctrl.toastSuccess();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
         }
 
@@ -307,16 +322,18 @@
         }
 
         function addProject(project, version, installer){
-            ctrl.projectReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/projects?installer="+installer+"&version="+version
-            $http.post(ctrl.projectReqest, project).success(function (data){
-                ctrl.showSuccess = true ;
+            ctrl.projectRequestUrl = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/projects?installer="+installer+"&version="+version
+            ctrl.projectRequest= $http.post(ctrl.projectRequestUrl, project)
+            ctrl.projectRequest.success(function (data){
                 ctrl.success = "Projects are successfully updated."
                 ctrl.loadDetails();
+                ctrl.toastSuccess();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
+            return ctrl.projectRequest;
         }
 
         function openAddProjectModal(version, installer){
@@ -338,16 +355,18 @@
         }
 
         function addCustom(custom,project,version,installer){
-            ctrl.customReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/customs?installer="+installer+"&version="+version+"&project="+ project
-            $http.post(ctrl.customReqest, custom).success(function (data){
-                ctrl.showSuccess = true ;
+            ctrl.customRequestUrl = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/customs?installer="+installer+"&version="+version+"&project="+ project
+            ctrl.customRequest = $http.post(ctrl.customRequestUrl, custom)
+            ctrl.customRequest.success(function (data){
                 ctrl.success = "Customs are successfully updated."
                 ctrl.loadDetails();
+                ctrl.toastSuccess();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
+            return ctrl.customRequest
         }
 
         function openDeleteCustomModal(custom,project,version,installer){
@@ -365,13 +384,13 @@
         function deleteCustom(data){
             ctrl.customReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/customs?installer="+data.installer+"&version="+data.version+"&project="+ data.project
             $http.delete(ctrl.customReqest, {data: data.customs, headers: {'Content-Type': 'application/json'}}).success(function (data){
-                ctrl.showSuccess = true ;
                 ctrl.success = "Customs are successfully deleted."
                 ctrl.loadDetails();
+                ctrl.toastSuccess();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
         }
 
@@ -408,13 +427,13 @@
         function deleteProject(data){
             ctrl.projectReqest = testapiApiUrl+ "/scenarios/"+ ctrl.name + "/projects?installer="+data.installer+"&version="+data.version
             $http.delete(ctrl.projectReqest, {data: data.projects, headers: {'Content-Type': 'application/json'}}).success(function (data){
-                ctrl.showSuccess = true ;
-                ctrl.success = "Projects are successfully Deleted."
+                ctrl.success = "Projects are successfully Deleted.";
+                ctrl.toastSuccess();
                 ctrl.loadDetails();
             })
             .catch(function (data) {
-                ctrl.showError = true;
                 ctrl.error = data.statusText;
+                ctrl.toastError();
             });
         }
 
@@ -443,8 +462,11 @@
                 ctrl.customs = custom.split(/[ ,]+/).filter(Boolean);
             }
             console.log(ctrl.customs)
-            ctrl.data.successHandler(ctrl.customs,ctrl.data.project,ctrl.data.version,ctrl.data.installer);
-            $uibModalInstance.dismiss('cancel');
+            ctrl.data.successHandler(
+                ctrl.customs, ctrl.data.project,
+                ctrl.data.version,ctrl.data.installer).success(function(){
+                    $uibModalInstance.dismiss('cancel');
+                });
 
         }
 
@@ -486,8 +508,10 @@
          */
         function confirm() {
             ctrl.projects.push(ctrl.project)
-            ctrl.data.successHandler(ctrl.projects, ctrl.data.version, ctrl.data.installer);
-            $uibModalInstance.dismiss('cancel');
+            ctrl.data.successHandler(
+                ctrl.projects, ctrl.data.version, ctrl.data.installer).success( function(){
+                    $uibModalInstance.dismiss('cancel');
+                });
 
         }
 
@@ -545,8 +569,9 @@
          */
         function confirm() {
             ctrl.versions.push(ctrl.version)
-            ctrl.data.successHandler(ctrl.versions, ctrl.data.installer);
-            $uibModalInstance.dismiss('cancel');
+            ctrl.data.successHandler(ctrl.versions, ctrl.data.installer).success(function(){
+                $uibModalInstance.dismiss('cancel');
+            });
 
         }
 

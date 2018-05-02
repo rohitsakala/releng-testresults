@@ -204,8 +204,8 @@
      * edit the project's details
      */
     angular.module('testapiApp').controller('scenarioModalController', scenarioModalController);
-    scenarioModalController.$inject = ['$scope', '$uibModal', '$uibModalInstance', 'data'];
-    function scenarioModalController($scope, $uibModal, $uibModalInstance, data) {
+    scenarioModalController.$inject = ['$scope', '$uibModal', '$uibModalInstance', 'data', '$q'];
+    function scenarioModalController($scope, $uibModal, $uibModalInstance, data, $q) {
         var ctrl = this;
         ctrl.confirm = confirm;
         ctrl.cancel = cancel;
@@ -237,6 +237,9 @@
 
         function handleModalData(installer){
            ctrl.scenario.installers.push(installer)
+           var deferred = $q.defer();
+           deferred.resolve();
+           return deferred.promise;
         }
 
         function openInstallerModal(){
@@ -281,8 +284,9 @@
          * inputs.
          */
         function confirm() {
-            ctrl.data.successHandler(ctrl.installer);
-            $uibModalInstance.dismiss('cancel');
+            ctrl.data.successHandler(ctrl.installer).success(function(){
+               $uibModalInstance.dismiss('cancel');
+            });
 
         }
 

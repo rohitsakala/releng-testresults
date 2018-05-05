@@ -2,6 +2,7 @@ import json
 
 from testapiclient.utils import command
 from testapiclient.utils import urlparse
+from testapiclient.models import scenario
 
 
 def scenarios_url():
@@ -64,22 +65,37 @@ class ScenarioCreate(command.ShowOne):
         parser.add_argument('scenario',
                             type=json.loads,
                             help='Scenario create request format :\n'
-                                 '\'{ "installers": [], "name": ""}\',\n'
-                                 'Intaller create request format :\n'
-                                 '\'{"installer": "","versions": []}\',\n'
-                                 'Version create request format :\n'
-                                 '\'{"owner": "","version": "",'
-                                 '"projects": []}\',\n'
-                                 'Project create request format :\n'
-                                 '\'{"project": "","customs": [],'
-                                 '"scores": [],'
-                                 '"trust_indicators": []}\',\n'
-                                 'Custom create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Intaller create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioInstallerCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Version create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioVersionCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Project create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioProjectCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Custom create request format :\n'
                                  '\'["asf","saf"]\',\n'
-                                 'Score create request format :\n'
-                                 '\'{"date": "", "score": ""}\',\n'
-                                 'Trust Indicators create request format :\n'
-                                 '\'{"date": "", "status": ""}\'')
+                                 '\n Score create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioScoreCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\nTrustIndicator create request format:\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioTICreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -110,23 +126,38 @@ class ScenarioPut(command.ShowOne):
                             help='Update scenario by name')
         parser.add_argument('scenario',
                             type=json.loads,
-                            help='Scenario create request format :\n'
-                                 '\'{ "installers": [], "name": ""}\',\n'
-                                 'Intaller create request format :\n'
-                                 '\'{"installer": "","versions": []}\',\n'
-                                 'Version create request format :\n'
-                                 '\'{"owner": "","version": "",'
-                                 '"projects": []}\',\n'
-                                 'Project create request format :\n'
-                                 '\'{"project": "","customs": [],'
-                                 '"scores": [],'
-                                 '"trust_indicators": []}\',\n'
-                                 'Custom create request format :\n'
+                            help='Scenario create request format :\n' +
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Intaller create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioInstallerCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Version create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioVersionCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Project create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioProjectCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\n Custom create request format :\n'
                                  '\'["asf","saf"]\',\n'
-                                 'Score create request format :\n'
-                                 '\'{"date": "", "score": ""}\',\n'
-                                 'Trust Indicators create request format :\n'
-                                 '\'{"date": "", "status": ""}\'')
+                                 '\n Score create request format :\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioScoreCreateRequest(
+                                     ).__dict__
+                                     )) +
+                                 '\nTrustIndicator create request format:\n'
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioTICreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -145,7 +176,10 @@ class InstallerCreate(command.Command):
         parser.add_argument('installer',
                             type=json.loads,
                             help='Intaller create request format :\n'
-                                 '\'[{"installer": "","versions": []}]\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioInstallerCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -186,7 +220,10 @@ class InstallerPut(command.Command):
         parser.add_argument('installer',
                             type=json.loads,
                             help='Intaller create request format :\n'
-                                 '\'[{"installer": "","versions": []}]\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioInstallerCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -209,10 +246,10 @@ class VersionCreate(command.Command):
         parser.add_argument('version',
                             type=json.loads,
                             help='version create request format :\n'
-                                 '\'[{"owner":(string),'
-                                 '"version": (string),'
-                                 '"projects": (array[ScenarioProject])'
-                                 '}]\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioVersionCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -261,10 +298,10 @@ class VersionPut(command.Command):
         parser.add_argument('version',
                             type=json.loads,
                             help='version update request format :\n'
-                                 '\'[{"owner":(string),'
-                                 '"version": (string),'
-                                 '"projects": (array[ScenarioProject])'
-                                 '}]\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioVersionCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -320,10 +357,10 @@ class ProjectCreate(command.Command):
         parser.add_argument('project',
                             type=json.loads,
                             help='Project create request format :\n'
-                                 '\'[{ "project" (string),'
-                                 '"scores": (array[ScenarioScore]),'
-                                 '"trust_indicators": (array[ScenarioTI]),'
-                                 '"customs": (array[string]) }]\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioProjectCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -378,10 +415,10 @@ class ProjectPut(command.Command):
         parser.add_argument('project',
                             type=json.loads,
                             help='Project update request format :\n'
-                                 '\'[{ "project" (string),'
-                                 '"scores": (array[ScenarioScore]),'
-                                 '"trust_indicators": (array[ScenarioTI]),'
-                                 '"customs": (array[string]) }]\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioProjectCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -511,8 +548,10 @@ class TrustIndicatorCreate(command.Command):
         parser.add_argument('trust_indicator',
                             type=json.loads,
                             help='trust indicator create request format :\n'
-                                 '\'{ "date": (string, optional),'
-                                 '"status": (string, optional) }\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioTICreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -547,8 +586,10 @@ class ScoreCreate(command.Command):
         parser.add_argument('score',
                             type=json.loads,
                             help='score create request format :\n'
-                                 '\'{ "date": (string, optional),'
-                                 '"score" : (string, optional) }\',\n')
+                                 '\'{}\''.format(json.dumps(
+                                     scenario.ScenarioScoreCreateRequest(
+                                     ).__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):

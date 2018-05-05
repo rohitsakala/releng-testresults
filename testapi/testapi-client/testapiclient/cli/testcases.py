@@ -2,6 +2,7 @@ import json
 
 from testapiclient.utils import command
 from testapiclient.utils import urlparse
+from testapiclient.models import testcase
 
 
 def testcases_url(name):
@@ -60,12 +61,9 @@ class TestcaseCreate(command.ShowOne):
         parser.add_argument('testcase',
                             type=json.loads,
                             help='Testcase create request format:\n'
-                                 '\'{"run": "", "name": "", "ci_loop": "",'
-                                 '"tags": "",\n "url": "", "blocking": "",'
-                                 '"domains": "", "dependencies": "",\n '
-                                 '"version": "", "criteria": "", "tier": "",'
-                                 '"trust": "",\n "catalog_description": "",'
-                                 '"description": ""}\'')
+                                 '\'{}\''.format(json.dumps(
+                                     testcase.TestCaseCreateRequest().__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):
@@ -105,12 +103,9 @@ class TestcasePut(command.ShowOne):
         parser.add_argument('testcase',
                             type=json.loads,
                             help='Testcase Update request format:\n'
-                                 '\'{"run": "", "name": "", "ci_loop": "",'
-                                 '"tags": "",\n "url": "", "blocking": "",'
-                                 '"domains": "", "dependencies": "",\n '
-                                 '"version": "", "criteria": "", "tier": "",'
-                                 '"trust": "",\n "catalog_description": "",'
-                                 '"description": ""}\'')
+                                 '\'{}\''.format(json.dumps(
+                                     testcase.TestCaseCreateRequest().__dict__
+                                     )))
         return parser
 
     def take_action(self, parsed_args):

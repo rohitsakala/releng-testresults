@@ -682,8 +682,11 @@ describe('testing the scenarios page for user', function () {
         name.sendKeys('test');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
-        expect(element(by.cssContainingText(".alert","Installers are successfully updated."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Installers are successfully updated."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
 
     });
 
@@ -720,8 +723,11 @@ describe('testing the scenarios page for user', function () {
         .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Installer is successfully deleted."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Installer is successfully deleted."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Expand installer by  user', function() {
@@ -753,8 +759,11 @@ describe('testing the scenarios page for user', function () {
         owner.sendKeys('testOwner');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
-        expect(element(by.cssContainingText(".alert","Versions are successfully updated."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Versions are successfully updated."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Expand versions by  user', function() {
@@ -793,8 +802,11 @@ describe('testing the scenarios page for user', function () {
         .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Versions are successfully deleted."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Versions are successfully deleted."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Expand version by  user', function() {
@@ -832,8 +844,11 @@ describe('testing the scenarios page for user', function () {
         project.sendKeys('testP');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
-        expect(element(by.cssContainingText(".alert","Projects are successfully updated."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Projects are successfully updated."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Expand projects by  user', function() {
@@ -878,8 +893,11 @@ describe('testing the scenarios page for user', function () {
         .isDisplayed()).toBe(true);
         var buttonOK = element(by.buttonText('Ok'));
         buttonOK.click();
-        expect(element(by.cssContainingText(".alert","Projects are successfully Deleted."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Projects are successfully Deleted."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Expand project by  user', function() {
@@ -1011,8 +1029,11 @@ describe('testing the scenarios page for user', function () {
         custom.sendKeys('testC');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
-        expect(element(by.cssContainingText(".alert","Customs are successfully updated."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Customs are successfully updated."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Add multiple Customs by user', function() {
@@ -1043,8 +1064,11 @@ describe('testing the scenarios page for user', function () {
         custom.sendKeys('testC,testD,');
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div/div[2]/button[1]'))
         buttonOk.click()
-        expect(element(by.cssContainingText(".alert","Customs are successfully updated."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Customs are successfully updated."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
     it( 'Delete Customs by user', function() {
@@ -1074,8 +1098,11 @@ describe('testing the scenarios page for user', function () {
         .isDisplayed()).toBe(true);
         var buttonOk = element(by.xpath('//*[@id="ng-app"]/body/div[3]/div/div/div[3]/button[1]'))
         buttonOk.click()
-        expect(element(by.cssContainingText(".alert","Customs are successfully deleted."))
+        browser.ignoreSynchronization = true;
+        expect(element(by.cssContainingText(".success.show","Customs are successfully deleted."))
         .isDisplayed()).toBe(true);
+        browser.sleep(500);
+        browser.ignoreSynchronization = false;
     });
 
 });

@@ -40,7 +40,7 @@ python-pip \
 crudini \
 --no-install-recommends
 
-RUN pip install --upgrade pip requests
+RUN pip install --upgrade requests
 
 RUN git config --global http.sslVerify false
 RUN git clone https://gerrit.opnfv.org/gerrit/releng-testresults /home/releng-testresults

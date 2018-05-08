@@ -152,7 +152,7 @@ module.exports = function (grunt) {
         makeReport: {
             src: '../tests/UI/coverage/*.json',
             options: {
-                print: 'detail'
+               	dir: '../tests/UI/coverage'
             }
         }
     });

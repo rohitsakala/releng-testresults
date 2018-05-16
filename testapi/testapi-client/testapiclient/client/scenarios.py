@@ -13,9 +13,14 @@ class ScenariosClient(base.Client):
     def create(self, scenario_req):
         return self.clientmanager.post(self.url, scenario_req)
 
-    def get(self):
-        return json.dumps(
-            self.clientmanager.get(self.url)['scenarios'])
+    def get(self, **queries):
+        if queries:
+            return json.dumps(
+                self.clientmanager.get(
+                    urlparse.query_join(self.url, **queries))['scenarios'])
+        else:
+            return json.dumps(
+                self.clientmanager.get(self.url)['scenarios'])
 
     def get_one(self, scenario_name):
         return json.dumps(

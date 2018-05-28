@@ -67,7 +67,8 @@ TestAPIClient follows a common command Structure.
 
 .. code-block:: shell
 
-    testapi [resource-name] [function] [-u] [username] [-p] [password] [command-arguments]
+    testapi [resource-name] [function] [-u] [username] [-p] [password]
+    [command-arguments]
 
 .. NOTE::
   resource-name : include first order parent name and resource name.
@@ -80,8 +81,8 @@ TestAPIClient follows a common command Structure.
 .. NOTE::
   -u and -p are optional commands. The user can decide on them.
 
-There are many arguments for each commands. User can get them using help command in the
-cli.
+There are many arguments for each commands. User can get them using
+help command in the cli.
 
 .. code-block:: shell
 
@@ -223,6 +224,24 @@ or
 .. NOTE::
   project-schema - '{"name": "", "description": ""}'
 
+Delete
+""""""
+
+Authentication is required
+
+.. code-block:: shell
+
+    testapi project delete [-u] [username] [-p] [password] [project-name]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) project delete [project-name]
+
+.. NOTE::
+   project-name is mandatory.
 
 Testcase
 ^^^^^^^^
@@ -430,3 +449,416 @@ Authentication is not required
 
 .. NOTE::
    deployresult_id is mandatory.
+
+
+Scenario
+^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario create [-u] [username] [-p] [password] [scenario-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario create [scenario-schema]
+
+.. NOTE::
+  scenario-schema - '{"name": "", "installers": []}'
+
+
+Get
+"""
+
+Authentication is not required
+
+.. code-block:: shell
+
+    testapi scenario get [-name] [key-word]
+
+.. NOTE::
+
+ user can use some attributes to reduce the search results. These are not
+ mandatory.
+
+   * -name : Backend will use regular expression to search.
+   * -project : Search using project name
+   * -installer : Search using installer name
+   * -version : Search using version name
+
+Get one
+"""""""
+
+Authentication is not required
+
+.. code-block:: shell
+
+    testapi scenario getone [name-keyword]
+
+.. NOTE::
+   name-keyword is mandatory.
+
+Update
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario put [-u] [username] [-p] [password] [scenario-name]
+    [scenario-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario put [scenario-name] [scenario-schema]
+
+.. NOTE::
+  scenario-schema - '{"name": "", "installers": []}'
+
+Delete
+""""""
+
+Authentication is required
+
+.. code-block:: shell
+
+    testapi scenario delete [-u] [username] [-p] [password] [scenario-name]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario delete [scenario-name]
+
+.. NOTE::
+   scenario-name is mandatory.
+
+Scenario installer
+^^^^^^^^^^^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario installer create [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] [installer-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario installer create --scenario-name [scenario-name]
+    [installer-schema]
+
+.. NOTE::
+  installer-schema - '{"installer": "", "versions": []}'
+
+Update
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario installer put [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] [installer-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario put --scenario-name [scenario-name] [installer-schema]
+
+.. NOTE::
+  scenario-schema - '{"installer": "", "installers": []}'
+
+Delete
+""""""
+
+Authentication is required
+
+.. code-block:: shell
+
+    testapi scenario delete [-u] [username] [-p] [password] --scenario-name
+    [scenario-name] [name]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario delete --scenario-name [scenario-name] [name]
+
+Scenario version
+^^^^^^^^^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario version create [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] [version-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario installer create --scenario-name [scenario-name]
+    --installer [installer] [version-schema]
+
+.. NOTE::
+  installer-schema - '{"version": "", "owner": "", "projects": []}'
+
+Update
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario installer put [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] [version-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario installer put --scenario-name [scenario-name]
+    --installer [installer] [installer-schema]
+
+.. NOTE::
+  scenario-schema - '{"version": "","owner": "", "projects": []}'
+
+Delete
+""""""
+
+Authentication is required
+
+.. code-block:: shell
+
+    testapi scenario installer delete [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] [name]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario installer delete  --scenario-name [scenario-name]
+    --installer [installer] [name]
+
+Scenario Project
+^^^^^^^^^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario project create [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer]
+    ---version [version] [project-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario project create --scenario-name [scenario-name]
+    --installer [installer] ---version [version] [project-schema]
+
+.. NOTE::
+  installer-schema - '{"scores": [],"customs": [], "trust_indicators": [],
+  project:""}'
+
+Update
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario project put [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] ---version
+    [version] [project-schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario project put --scenario-name [scenario-name] --installer
+    [installer] ---version [version] [project-schema]
+
+.. NOTE::
+  scenario-schema - '{"scores": [],"customs": [], "trust_indicators": [],
+  project:""}'
+
+Delete
+""""""
+
+Authentication is required
+
+.. code-block:: shell
+
+    testapi scenario project delete [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] ---version
+    [version] [name]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario project delete  --scenario-name [scenario-name]
+    --installer [installer] ---version [version] [name]
+
+Scenario Customs
+^^^^^^^^^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario custom create [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer]
+    ---version [version] --project [project] [customs]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario custom create --scenario-name [scenario-name]
+    --installer [installer] ---version [version] --project [project] [customs]
+
+.. NOTE::
+
+  customs : Space sperated strings
+
+Update
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario custom put [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] ---version
+    [version] --project [project] [customs]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario custom put --scenario-name [scenario-name] --installer
+    [installer] ---version [version] --project [project] [customs]
+
+.. NOTE::
+
+  customs : Space sperated strings
+
+Delete
+""""""
+
+Authentication is required
+
+.. code-block:: shell
+
+    testapi scenario custom delete [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer] ---version
+    [version] --project [project] [customs]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario custom delete  --scenario-name [scenario-name]
+    --installer [installer] ---version [version] --project [project]
+    [customs]
+
+.. NOTE::
+
+  customs : Space sperated strings
+
+Scenario Score
+^^^^^^^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario score create [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer]
+    ---version [version] --project [project] [score_schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario score create --scenario-name [scenario-name]
+    --installer [installer] ---version [version] --project [project]
+    [score_schema]
+
+.. NOTE::
+
+  score_schema : '{"score": "", "date": ""}'
+
+Scenario TrustIndicators
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create
+""""""
+
+Authentication required
+
+.. code-block:: shell
+
+    testapi scenario trustindicator create [-u] [username] [-p] [password]
+    --scenario-name [scenario-name] --installer [installer]
+    ---version [version] --project [project] [trustindicator_schema]
+
+or
+
+.. code-block:: shell
+
+    $ testapi [-u] [username] [-p] [password]
+    (testapi) scenario trustindicator create --scenario-name [scenario-name]
+    --installer [installer] ---version [version] --project [project]
+    [trustindicator_schema]
+
+.. NOTE::
+
+  trustindicator_schema : '{"status": "", "date": ""}'
